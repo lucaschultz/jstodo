@@ -10,6 +10,35 @@ import HelloWorld from './components/HelloWorld.vue';
 
 export default {
   name: 'App',
+  data: function () {
+    return {
+      currentUser: 'default',
+      mainData: [
+        {
+          user: 'default',
+          lists: [
+            {
+              name: 'TestListe',
+              items: [
+                {
+                  name: 'TestItem 1',
+                  done: false
+                },
+                {
+                  name: 'TestItem 2',
+                  done: true
+                }
+              ]
+            },
+            {
+              name: 'Leere Liste',
+              items: []
+            }
+          ]
+        }
+      ]
+    };
+  },
   components: {
     HelloWorld
   }
