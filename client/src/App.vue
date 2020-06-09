@@ -1,12 +1,14 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Todoliste Projekt"/>
+  <div id="app" class="site-wrapper">
+    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+    <TheHeader v-bind:currentUser="currentUser"></TheHeader>
+    <TheMainContent v-bind:user="currentLists"></TheMainContent>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import TheMainContent from './components/TheMainContent.vue';
+import TheHeader from './components/TheHeader.vue';
 
 export default {
   name: 'App',
@@ -25,9 +27,61 @@ export default {
                   done: false
                 },
                 {
+                  name: 'TestItem 1.5',
+                  done: false
+                },
+                {
                   name: 'TestItem 2',
                   done: true
-                }
+                },
+                {
+                  name: 'TestItem 1',
+                  done: false
+                },
+                {
+                  name: 'TestItem 1.5',
+                  done: false
+                },
+                {
+                  name: 'TestItem 2',
+                  done: true
+                },
+                {
+                  name: 'TestItem 1',
+                  done: false
+                },
+                {
+                  name: 'TestItem 1.5',
+                  done: false
+                },
+                {
+                  name: 'TestItem 2',
+                  done: true
+                },
+                {
+                  name: 'TestItem 1',
+                  done: false
+                },
+                {
+                  name: 'TestItem 1.5',
+                  done: false
+                },
+                {
+                  name: 'TestItem 2',
+                  done: true
+                },
+                {
+                  name: 'TestItem 1',
+                  done: false
+                },
+                {
+                  name: 'TestItem 1.5',
+                  done: false
+                },
+                {
+                  name: 'TestItem 2',
+                  done: true
+                },
               ]
             },
             {
@@ -39,19 +93,30 @@ export default {
       ]
     };
   },
+  computed: {
+    currentLists: function () {
+      const result = this.mainData.filter((u) => {
+        return u.user === this.currentUser;
+      });
+      return result[0];
+    }
+  },
   components: {
-    HelloWorld
+    TheMainContent,
+    TheHeader
   }
 };
 </script>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #333;
 }
 </style>
