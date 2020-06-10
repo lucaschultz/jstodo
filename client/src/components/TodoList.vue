@@ -10,7 +10,7 @@
           <span>60%</span>
         </div>
       </div>
-      <ul>
+      <ul class="item-list">
         <TodoItem v-for="item in items" v-bind:item="item" v-bind:key="item.id" @updated-item="updateItems"></TodoItem>
       </ul>
       <ItemEditor :item="currentItem"></ItemEditor>
