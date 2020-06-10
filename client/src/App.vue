@@ -41,6 +41,18 @@ export default {
                   done: true,
                   due: '01.01.2020',
                   id: '684fdfhdhsghzd'
+                },
+                {
+                  name: 'TestItem 1.5',
+                  done: true,
+                  due: '01.01.2020',
+                  id: 'dfksduhf6789'
+                },
+                {
+                  name: 'TestItem 2',
+                  done: true,
+                  due: '01.01.2020',
+                  id: '684fddsfsdfhdhsghzd'
                 }
               ]
             },
@@ -111,16 +123,3 @@ export default {
   }
 };
 </script>
-
-<style>
-body {
-  margin: 0;
-  padding: 0;
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #333;
-}
-</style>

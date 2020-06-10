@@ -1,20 +1,23 @@
 <template>
-  <form>
-    <div class="fiel-wrapper">
-      <div class="todo-check"></div>
-      <input v-model="name" placeholder="edit me" class="new-todo-name">
+  <form :class="{ expanded: isExpanded }">
+    <AddButton @click="newItem"></AddButton>
+    <div class="field-wrapper">
+      <input type="checkbox" disabled v-model="done">
+      <input v-model="name" placeholder="Todo" class="new-todo-name">
       <div class="break"></div>
-      <input type="date" class="new-todo-due" id="start" value="" min="2020-01-01">
+      <input type="date" class="new-todo-due" v-model="due" min="2020-01-01">
     </div>
     <div class="button-wrapper">
-      <EditButton></EditButton>
-      <EditButton></EditButton>
+      <ConfirmButton @click="emitItem"></ConfirmButton>
+      <CancelButton @click="cancelEdit"></CancelButton>
     </div>
   </form>
 </template>
 
 <script>
-import EditButton from './EditButton.vue';
+import ConfirmButton from './ConfirmButton.vue';
+import CancelButton from './CancelButton.vue';
+import AddButton from './AddButton.vue';
 
 export default {
   name: 'ItemEditor',
@@ -23,11 +26,55 @@ export default {
   },
   data: function () {
     return {
-      name: this.item.name,
+      name: '',
+      id: null,
+      due: '',
+      done: false
     };
   },
+  computed: {
+    isExpanded: function () {
+      return this.id !== null;
+    }
+  },
+  methods: {
+    generateID: function () {
+      return '_' + Math.random().toString(36).substr(2, 9);
+    },
+    newItem: function () {
+      this.id = this.generateID();
+    },
+    cancelEdit: function () {
+      this.id = null;
+      this.done = false;
+      this.name = '';
+      this.due = '';
+    },
+    emitItem: function () {
+      this.$emit('updated-item', {
+        id: this.id,
+        done: this.done,
+        name: this.name,
+        due: this.due
+      });
+      this.cancelEdit();
+    }
+  },
+  watch: {
+    item: {
+      deep: true,
+      handler: function (newVal) {
+        this.id = newVal.id;
+        this.done = newVal.done;
+        this.name = newVal.name;
+        this.due = newVal.due;
+      }
+    }
+  },
   components: {
-    EditButton
+    ConfirmButton,
+    CancelButton,
+    AddButton
   }
 };
 </script>

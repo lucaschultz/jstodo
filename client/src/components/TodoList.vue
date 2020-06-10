@@ -11,9 +11,9 @@
         </div>
       </div>
       <ul class="item-list">
-        <TodoItem v-for="item in items" v-bind:item="item" v-bind:key="item.id" @updated-item="updateItems"></TodoItem>
+        <TodoItem v-for="item in items" v-bind:item="item" v-bind:key="item.id" @updated-item="updateItems" @edit-item="setEditItem"></TodoItem>
       </ul>
-      <ItemEditor :item="currentItem"></ItemEditor>
+      <ItemEditor :item="editItem" @updated-item="updateItems"></ItemEditor>
     </div>
   </div>
 </template>
@@ -32,12 +32,7 @@ export default {
       name: this.list.name,
       id: this.list.id,
       items: this.list.items,
-      currentItem: {
-        name: '',
-        done: false,
-        due: '2020-10-12',
-        id: 'f4i3hr9f'
-      }
+      editItem: null
     };
   },
   computed: {
@@ -60,6 +55,13 @@ export default {
       } else {
         Object.assign(this.items[index], item);
       }
+    },
+    removeItem: function (item) {
+      this.items = this.items.filter(i => item.id !== i.id);
+    },
+    setEditItem: function (item) {
+      this.removeItem(item);
+      this.editItem = item;
     },
     emitList: function () {
       this.$emit('updated-list', {

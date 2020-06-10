@@ -2,9 +2,8 @@
     <ul>
         <li class="todo-item">
           <input type="checkbox" :id="extended" v-model="done">
-          <label class="todo-check" :for="extended"></label>
           <div class="item-name">{{ name }}</div>
-          <EditButton></EditButton>
+          <EditButton @click="editItem"></EditButton>
           <div class="break"></div>
           <div class="item-due">{{ due }}</div>
         </li>
@@ -25,6 +24,14 @@ export default {
     },
     updateItem () {
       this.$emit('updated-item', {
+        name: this.name,
+        done: this.done,
+        due: this.due,
+        id: this.id
+      });
+    },
+    editItem () {
+      this.$emit('edit-item', {
         name: this.name,
         done: this.done,
         due: this.due,
