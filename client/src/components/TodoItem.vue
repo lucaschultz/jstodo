@@ -1,20 +1,10 @@
 <template>
     <ul>
         <li class="todo-item">
-          <input type="checkbox" :id="id" v-model="done">
-          <label class="todo-check" :for="id"></label>
-          <!-- <div class="item-info-wrapper"> -->
+          <input type="checkbox" :id="extended" v-model="done">
+          <label class="todo-check" :for="extended"></label>
           <div class="item-name">{{ name }}</div>
-          <!-- </div> -->
-          <button class="edit-button">
-            <svg width="11px" height="3px" viewBox="0 0 11 3" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <g class="edit-button-symbol" fill="black">
-                <circle id="Oval" cx="1.5" cy="1.5" r="1.5"></circle>
-                <circle id="Oval-Copy" cx="5.5" cy="1.5" r="1.5"></circle>
-                <circle id="Oval-Copy-2" cx="9.5" cy="1.5" r="1.5"></circle>
-              </g>
-            </svg>
-          </button>
+          <EditButton></EditButton>
           <div class="break"></div>
           <div class="item-due">{{ due }}</div>
         </li>
@@ -22,6 +12,8 @@
 </template>
 
 <script>
+import EditButton from './EditButton.vue';
+
 export default {
   name: 'TodoList',
   props: {
@@ -31,26 +23,41 @@ export default {
     generateID () {
       return '_' + Math.random().toString(36).substr(2, 9);
     },
-    emitItem (item) {
-      if (item.id === null) {
-        item.id = this.generateID();
-      }
-      this.$emit('item', item);
+    updateItem () {
+      this.$emit('updated-item', {
+        name: this.name,
+        done: this.done,
+        due: this.due,
+        id: this.id
+      });
     }
   },
   data: function () {
     return {
       name: this.item.name,
       done: this.item.done,
-      due: '2020-10-12',
+      due: this.item.due,
       id: this.item.id,
-      empty: {
-        name: 'Was gibts zu tun?',
-        due: 'dd.mm.yyyy',
-        done: false,
-        id: null
-      }
+      extended: this.item.id + this.generateID(),
     };
   },
+  watch: {
+    done: function () {
+      this.updateItem();
+    },
+    item: {
+      deep: true,
+      handler (newVal) {
+        this.name = newVal.name;
+        this.done = newVal.done;
+        this.due = newVal.due;
+        this.id = newVal.id;
+        this.extended = newVal.id + this.generateID();
+      }
+    }
+  },
+  components: {
+    EditButton,
+  }
 };
 </script>

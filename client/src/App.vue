@@ -1,8 +1,8 @@
 <template>
   <div id="app" class="site-wrapper">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <TheHeader v-bind:currentUser="currentUser"></TheHeader>
-    <TheMainContent v-bind:user="currentLists"></TheMainContent>
+    <TheHeader v-bind:currentUser="currentUser.user"></TheHeader>
+    <TheMainContent v-bind:user="currentUser" @updated-user="updateUsers"></TheMainContent>
   </div>
 </template>
 
@@ -14,10 +14,11 @@ export default {
   name: 'App',
   data: function () {
     return {
-      currentUser: 'default',
-      mainData: [
+      currentID: 'g3ruzgb23',
+      users: [
         {
           user: 'default',
+          id: 'g3ruzgb23',
           lists: [
             {
               name: 'TestListe',
@@ -47,6 +48,42 @@ export default {
               name: 'Leere Liste',
               id: '87df8ewf7wd5df8',
               items: []
+            },
+            {
+              name: 'Andere Liste',
+              id: '8373738740',
+              items: [
+                {
+                  name: 'Wäsche Waschen',
+                  done: true,
+                  due: '01.01.2020',
+                  id: '832637642352'
+                },
+                {
+                  name: 'XML Lernen',
+                  done: false,
+                  due: '01.01.2020',
+                  id: '89378283387498'
+                }
+              ]
+            },
+            {
+              name: 'Noch eine Liste',
+              id: 'jbsd3e7wf',
+              items: [
+                {
+                  name: 'Kochen',
+                  done: true,
+                  due: '01.01.2020',
+                  id: 'fh37hiu78'
+                },
+                {
+                  name: 'Spazieren gehen',
+                  done: true,
+                  due: '01.01.2020',
+                  id: 'febd3z48z7tl'
+                }
+              ]
             }
           ]
         }
@@ -54,11 +91,18 @@ export default {
     };
   },
   computed: {
-    currentLists: function () {
-      const result = this.mainData.filter((u) => {
-        return u.user === this.currentUser;
-      });
-      return result[0];
+    currentUser: function () {
+      return this.users.find(u => u.id === this.currentID);
+    }
+  },
+  methods: {
+    updateUsers: function (user) {
+      const index = this.users.findIndex(u => user.id === u.id);
+      if (index === -1) {
+        this.users.push(user);
+      } else {
+        Object.assign(this.users[index], user);
+      }
     }
   },
   components: {

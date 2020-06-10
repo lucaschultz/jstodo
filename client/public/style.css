@@ -264,7 +264,8 @@ header {
 
 #header-content-wrapper {
   height: 100%;
-  width: 900px;
+  width: 940px;
+  padding: 0 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -309,7 +310,7 @@ h1 {
 /* Content Grid */
 
 #main-content-wrapper {
-  width: 100vw;
+  width: calc(100vw - 40px);
   max-width: 800px;
   height: auto;
   padding-top: 20px;
@@ -436,7 +437,6 @@ input:checked ~ .todo-check::after {
   font-weight: 600;
   line-height: 1.2em; 
   text-decoration: none;
-  background-color: blue;
 }
 
 input:checked ~ .item-name {
