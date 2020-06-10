@@ -11,13 +11,18 @@
         </div>
       </div>
       <ul>
-        <li v-for="item in openItems" v-bind:item="item" v-bind:key="item.name">{{ item.name }}</li>
+        <TodoItem v-for="item in list.items" v-bind:item="item" v-bind:key="item.id"></TodoItem>
       </ul>
+      <div class="list-editor">
+        input
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import TodoItem from './TodoItem.vue';
+
 export default {
   name: 'TodoList',
   props: {
@@ -34,6 +39,9 @@ export default {
         return u.done;
       });
     }
+  },
+  components: {
+    TodoItem
   }
 };
 </script>

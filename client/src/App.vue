@@ -21,71 +21,31 @@ export default {
           lists: [
             {
               name: 'TestListe',
+              id: '6874wd48wef8d',
               items: [
                 {
                   name: 'TestItem 1',
-                  done: false
+                  done: false,
+                  due: '01.01.2020',
+                  id: 'jfghtfztf'
                 },
                 {
                   name: 'TestItem 1.5',
-                  done: false
+                  done: true,
+                  due: '01.01.2020',
+                  id: 'dfkuhf6789'
                 },
                 {
                   name: 'TestItem 2',
-                  done: true
-                },
-                {
-                  name: 'TestItem 1',
-                  done: false
-                },
-                {
-                  name: 'TestItem 1.5',
-                  done: false
-                },
-                {
-                  name: 'TestItem 2',
-                  done: true
-                },
-                {
-                  name: 'TestItem 1',
-                  done: false
-                },
-                {
-                  name: 'TestItem 1.5',
-                  done: false
-                },
-                {
-                  name: 'TestItem 2',
-                  done: true
-                },
-                {
-                  name: 'TestItem 1',
-                  done: false
-                },
-                {
-                  name: 'TestItem 1.5',
-                  done: false
-                },
-                {
-                  name: 'TestItem 2',
-                  done: true
-                },
-                {
-                  name: 'TestItem 1',
-                  done: false
-                },
-                {
-                  name: 'TestItem 1.5',
-                  done: false
-                },
-                {
-                  name: 'TestItem 2',
-                  done: true
-                },
+                  done: true,
+                  due: '01.01.2020',
+                  id: '684fdfhdhsghzd'
+                }
               ]
             },
             {
               name: 'Leere Liste',
+              id: '87df8ewf7wd5df8',
               items: []
             }
           ]
