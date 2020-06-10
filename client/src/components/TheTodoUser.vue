@@ -9,7 +9,7 @@
 import TodoList from './TodoList.vue';
 
 export default {
-  name: 'MainContent',
+  name: 'TheTodoUser',
   props: {
     user: Object,
   },

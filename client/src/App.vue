@@ -2,12 +2,12 @@
   <div id="app" class="site-wrapper">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <TheHeader v-bind:currentUser="currentUser.user"></TheHeader>
-    <TheMainContent v-bind:user="currentUser" @updated-user="updateUsers"></TheMainContent>
+    <TheTodoUser v-bind:user="currentUser" @updated-user="updateUsers"></TheTodoUser>
   </div>
 </template>
 
 <script>
-import TheMainContent from './components/TheMainContent.vue';
+import TheTodoUser from './components/TheTodoUser.vue';
 import TheHeader from './components/TheHeader.vue';
 
 export default {
@@ -106,7 +106,7 @@ export default {
     }
   },
   components: {
-    TheMainContent,
+    TheTodoUser,
     TheHeader
   }
 };
