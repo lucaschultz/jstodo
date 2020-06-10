@@ -13,15 +13,14 @@
       <ul>
         <TodoItem v-for="item in items" v-bind:item="item" v-bind:key="item.id" @updated-item="updateItems"></TodoItem>
       </ul>
-      <div class="list-editor">
-        input
-      </div>
+      <ItemEditor :item="currentItem"></ItemEditor>
     </div>
   </div>
 </template>
 
 <script>
 import TodoItem from './TodoItem.vue';
+import ItemEditor from './ItemEditor.vue';
 
 export default {
   name: 'TodoList',
@@ -33,6 +32,12 @@ export default {
       name: this.list.name,
       id: this.list.id,
       items: this.list.items,
+      currentItem: {
+        name: '',
+        done: false,
+        due: '2020-10-12',
+        id: 'f4i3hr9f'
+      }
     };
   },
   computed: {
@@ -78,7 +83,8 @@ export default {
     }
   },
   components: {
-    TodoItem
+    TodoItem,
+    ItemEditor
   }
 };
 </script>
