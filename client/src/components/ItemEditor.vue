@@ -5,7 +5,7 @@
       <input type="checkbox" disabled v-model="done">
       <input v-model="name" placeholder="Todo" class="new-todo-name">
       <div class="break"></div>
-      <input type="date" class="new-todo-due" v-model="due" min="2020-01-01">
+      <input type="date" class="new-todo-due" v-model="due" min="2020-01-01" placeholder="JJJJ-MM-TT">
     </div>
     <div class="button-wrapper">
       <ConfirmButton @click="emitItem"></ConfirmButton>

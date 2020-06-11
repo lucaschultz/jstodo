@@ -27,31 +27,31 @@ export default {
                 {
                   name: 'TestItem 1',
                   done: false,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: 'jfghtfztf'
                 },
                 {
                   name: 'TestItem 1.5',
                   done: true,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: 'dfkuhf6789'
                 },
                 {
                   name: 'TestItem 2',
                   done: true,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: '684fdfhdhsghzd'
                 },
                 {
                   name: 'TestItem 1.5',
                   done: true,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: 'dfksduhf6789'
                 },
                 {
                   name: 'TestItem 2',
                   done: true,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: '684fddsfsdfhdhsghzd'
                 }
               ]
@@ -68,13 +68,13 @@ export default {
                 {
                   name: 'Wäsche Waschen',
                   done: true,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: '832637642352'
                 },
                 {
                   name: 'XML Lernen',
                   done: false,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: '89378283387498'
                 }
               ]
@@ -86,13 +86,13 @@ export default {
                 {
                   name: 'Kochen',
                   done: true,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: 'fh37hiu78'
                 },
                 {
                   name: 'Spazieren gehen',
                   done: true,
-                  due: '01.01.2020',
+                  due: '2020-06-12',
                   id: 'febd3z48z7tl'
                 }
               ]

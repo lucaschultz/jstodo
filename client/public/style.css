@@ -170,21 +170,46 @@ select {
     background-color: inherit;
 }
 
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="tel"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 var(--focus);
+} 
+
 textarea {
     height: auto;
 }
 
 ::-webkit-input-placeholder { 
-    color:#aaa; 
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: inherit;
+    opacity: 1; 
 }
 ::-moz-placeholder { 
-    color:#aaa; 
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: inherit;
+    opacity: 1; 
 }
 :-ms-input-placeholder { 
-    color:#aaa; 
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: inherit;
+    opacity: 1; 
 }
 input:-moz-placeholder { 
-    color:#aaa; 
+    color: var(--text-secondary);
+    font-weight: 400;
+    font-size: inherit;
+    opacity: 1; 
 }
 
 /* Colors */
@@ -196,10 +221,12 @@ html {
   --secondary-accent: rgba(68, 68, 70, 1.00);
   --primary-accent: rgba(48, 48, 50, 1.00);
   --tertiary-accent: rgba(35, 35, 37, 1.00);
-  --text: rgba(200, 200, 200, 1.00);
+  --text-primary: rgba(200, 200, 200, 1.00);
+  --text-secondary: rgba(120, 120, 120, 1.00);
   --shadow: rgba(0, 0, 0, .2);
   --white: rgba(200, 200, 200, 1.00);
-  color: var(--text);
+  --focus: 2px rgba(39, 94, 254, .5);  
+  color: var(--text-primary);
   background-color: var(--bg-main);
 }
 
@@ -345,6 +372,9 @@ h1 {
   font-weight: 600;
   line-height: 1.2em; 
   text-decoration: none;
+  max-width: calc(100% - 60px);
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 input:checked ~ .item-name {
@@ -356,8 +386,10 @@ input:checked ~ .item-name {
   font-size: 10px;
   margin-left: 25px;
   overflow: hidden;
-  height: 12px;
+  height: 14px;
+  line-height: 14px;
   transition: height .2s;
+  color: var(--text-secondary);
 }
 
 input:checked ~ .item-due {
@@ -421,16 +453,8 @@ input:checked ~ .item-due {
   font-family: inherit;
   color: inherit;
   background-color: inherit;
-  border-radius: 3px;
   border: none;
 }
-
-.new-todo-name::placeholder,
-.new-todo-due::placeholder {
-  font-weight: 600;
-  color: inherit;
-}
-
 
 .field-wrapper {
   overflow: hidden;
@@ -451,7 +475,7 @@ input:checked ~ .item-due {
   font-weight: 600;
   height: 20px;
   line-height: 20px;
-  width: calc(100% - 25px);
+  width: calc(100% - 30px);
 }
 
 .button-wrapper {
@@ -461,18 +485,17 @@ input:checked ~ .item-due {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-self: flex-start;
   transition: height .2s linear;
 }
 
 .new-todo-due {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 400;
   margin-left: 25px;
   width: auto;
   height: 16px;
   line-height: 16px;
-  color: #838383 !important;
+  color: var(--text-secondary);
 }
 
 .todo-list-content > form.expanded {
@@ -493,6 +516,7 @@ input:checked ~ .item-due {
 .cancel-button svg,
 .confirm-button svg {
   width: 15px;
+  height: 15px;
 }
 
 form.expanded .cancel-button,
@@ -511,7 +535,7 @@ form.expanded .confirm-button:hover {
   justify-content: center;
   align-items: center;
   height: 15px;
-  transition: height .2s linear;
+  transition: height .2s linear, background-color .2s ease;
   overflow: hidden;
 }
 
@@ -539,7 +563,6 @@ form.expanded .confirm-button:hover {
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
   input[type='checkbox'] {
-    --focus: 2px rgba(39, 94, 254, .3);
     -webkit-appearance: none;
     -moz-appearance: none;
     height: 15px;
