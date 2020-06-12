@@ -119,7 +119,7 @@ section {
 }
 
 body {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   line-height: 1.5;
   font-size: 14px;
   font-size: 1.4em;
@@ -158,7 +158,6 @@ input[type="search"],
 textarea,
 select {
     border: none;
-    background-color: none;
     padding: 0;
     margin: 0;
     font: inherit;
@@ -216,6 +215,7 @@ input:-moz-placeholder {
 
 html {
   --color-accent: rgba(9, 91, 255, 1.00);
+  --weak-color-accent: rgba(9, 91, 255, .3);
   --bg-main: rgba(18, 18, 20, 1.00);
   --bg-accent: rgba(28, 28, 30, 1.00);
   --secondary-accent: rgba(68, 68, 70, 1.00);
@@ -235,11 +235,12 @@ html {
 
 header {
   width: 100vw;
-  height: 50px;
+  height: 60px;
   display: flex;
   justify-content: center;
   background-color: var(--bg-accent);
   border-bottom: 1px solid var(--primary-accent);
+  position: static;
 }
 
 #header-content-wrapper {
@@ -251,35 +252,132 @@ header {
   align-items: center;
 }
 
-#user-name {
-  margin: 0;
-}
-
-#user-dialogue-wrapper {
-  height: 100%;
-  width: auto;
+.users-wrapper {
   display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: center;
+  padding: 2px;
+  max-width: calc(100% - 130px);
+  overflow-y: scroll;
+  scrollscrollbar-width: thin;
 }
 
-#user-image {
-  height: 40px;
-  width: 40px;
+.users-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.users-wrapper * {
+  margin-left: 10px; 
+}
+
+.user-tile:first-child {
+  margin-left: 0; 
+}
+
+.user-tile {
+  height: 35px;
+  background-color: var(--bg-main);
+  display: flex;
+  padding: 10px;
   border-radius: 5px;
-  background-color: green;
-  margin-right: 5px;
+  align-items: center;
 }
 
-#switch-user-button {
-  display: block;
+.user-name {
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.user-name.default {
   margin: 0;
-  border: none;
-  padding: 0;
 }
 
-h1 {
+.user-tile.current {
+  box-shadow: 0 0 0 var(--focus);
+}
+
+.user-tile .edit-button {
+  margin: 0 0 0 10px;
+}
+
+.user-tile .edit-button:hover {
+  background-color: var(--primary-accent)
+}
+
+.user-tile .simple-button svg {
+  width: 12px;
+  height: 12px;
+  margin: 0;
+}
+
+.user-editor {
+  width: 35px;
+  overflow: hidden;
+  justify-content: space-around;
+  transition: background-color .2s ease-in-out, width .4s ease-in-out;
+  background-color: var(--bg-accent)
+}
+
+.user-editor:hover {
+  background-color: var(--bg-main);
+}
+
+.user-editor .simple-button {
+  opacity: 1;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-editor .add-button {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-editor .add-button svg {
+  margin: 0;
+}
+
+.user-editor input[type="text"] {
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  width: 80px;
+}
+
+.user-editor input[type="text"]:focus {
+  box-shadow: none;
+}
+
+.user-editor.expanded {
+  background-color: var(--bg-main);
+  width: 160px;
+}
+
+.user-editor.expanded .add-button {
+  display: none;
+}
+
+.user-editor *:not(:first-child) {
+  display: none;
+}
+
+.user-editor.expanded .simple-button {
+  display: flex;
+}
+
+.user-editor.expanded input[type="text"] {
+  display: block;
+}
+
+header h1 {
+  width: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 32px;
   font-weight: 900;
   line-height: 1em;
@@ -289,7 +387,9 @@ h1 {
 
 /* Content Grid */
 
+
 #main-content-wrapper {
+  position: relative;
   width: calc(100vw - 40px);
   max-width: 800px;
   height: auto;
@@ -316,37 +416,53 @@ h1 {
 
 .list-header-wrapper {
   width: 100%;
-  border-radius: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .list-title {
   font-size: 28px;
   font-weight: 900;
-  line-height: 1em;
+  line-height: 1.2em;
   white-space: pre-wrap;
-  margin: 0; 
+  overflow-wrap: break-word;
+  max-width: calc(100% - 35px);
+  margin: 0;
 }
 
 .progress-wrapper {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  margin: 10px 0; 
+  margin: 10px 0 25px 0;
+  /*background-color: var(--tertiary-accent);*/
+  /*height: 30px;*/
+  /*padding: 5px;*/
+  border-radius: 5px;
+}
+
+.progress-wrapper span {
+  font-size: 12px;
+  width: 25px;
+  text-align: center;
+  /*display: none;*/
 }
 
 .progress-bar-outer {
-  width: 80%;
-  height: 4px;
+  width: calc(100% - 35px);
+  height: 1px;
   background: var(--primary-accent);
   border-radius: 1px;
 }
 
 .progress-bar-inner {
   height: 100%;
-  width: 60%;
+  width: var(--progress);
   background: var(--color-accent);
   border-radius: inherit;
+  transition: width .5s ease-in-out;
 }
 
 .item-list {
@@ -356,6 +472,7 @@ h1 {
 /* Todo Item */
 
 .todo-item {
+  background-color: transparent;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -404,11 +521,17 @@ input:checked ~ .item-due {
   width:30px;
   margin-left: auto;
   border-radius: 3px;
+  background-color: inherit;
   transition: background-color .2s ease;
+  cursor: pointer;
 }
 
 .simple-button:hover {
   background-color: var(--tertiary-accent);
+}
+
+.simple-button:disabled:hover {
+  background-color: inherit;
 }
 
 .edit-button svg {
@@ -447,6 +570,7 @@ input:checked ~ .item-due {
   margin-right: 10px;
 }
 
+.new-todo-cost,
 .new-todo-name,
 .new-todo-due {
   display: block;
@@ -478,16 +602,11 @@ input:checked ~ .item-due {
   width: calc(100% - 30px);
 }
 
-.button-wrapper {
-  margin-left: auto;
-  overflow: hidden;
-  height: 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: height .2s linear;
+input.new-todo-cost:focus {
+  box-shadow: none;
 }
 
+.new-todo-cost,
 .new-todo-due {
   font-size: 10px;
   font-weight: 400;
@@ -496,6 +615,25 @@ input:checked ~ .item-due {
   height: 16px;
   line-height: 16px;
   color: var(--text-secondary);
+}
+
+.new-todo-cost {
+  width: 50px;
+}
+
+.new-todo-cost:placeholder {
+  width: 50px;
+  font-size: 9px;
+}
+
+.button-wrapper {
+  margin-left: auto;
+  overflow: hidden;
+  height: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: height .2s linear;
 }
 
 .todo-list-content > form.expanded {
@@ -537,20 +675,20 @@ form.expanded .confirm-button:hover {
   height: 15px;
   transition: height .2s linear, background-color .2s ease;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .todo-list-content > form.expanded .big-button {
   height: 0px;
 }
 
-.todo-list-content > form.expanded .big-button-symbol {
+.todo-list-content > form.expanded .add-button {
   opacity: 0;
 }
 
 .add-button svg {
   width: 15px;
   height: 15px;
-  /*transition: height .2s linear;*/
 }
 
 .big-button-symbol {
@@ -559,7 +697,126 @@ form.expanded .confirm-button:hover {
   transition: opacity .1s ease-in-out;
 }
 
+/* ListEditor */
 
+.list-editor-wrapper {
+  background-color: transparent;
+  border-radius: 20px;
+  padding: 20px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color .2s ease;
+}
+
+.list-editor-wrapper:hover {
+  background-color: var(--bg-accent);
+}
+
+.list-editor-wrapper.expanded {
+  background-color: var(--bg-accent);
+}
+
+.list-editor-wrapper .add-button {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: none;
+}
+
+.list-editor-wrapper.expanded .add-button {
+  height: 0px;
+}
+
+.list-editor-wrapper .add-button svg {
+  height: 25px;
+  width: 25px;
+  opacity: 1;
+  /*transition: opacity .2s ease;*/
+}
+
+.list-editor-wrapper.expanded .add-button {
+  opacity: 0;
+}
+
+.edit-wrapper {
+  min-height: 0px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 0px;
+  opacity: 0;
+  /*transition: min-height .1s linear, height .1s linear, opacity .1s linear;*/
+}
+
+.expanded .edit-wrapper {
+  min-height: 210px;
+  opacity: 1;
+  height: 100%;
+}
+
+.list-editor-wrapper .todo-list-wrapper {
+  padding: 0;
+  min-height: 0px;
+}
+
+.list-editor-wrapper .todo-list-wrapper * {
+  opacity: .75;
+  cursor: not-allowed;
+}
+
+.list-editor-wrapper .list-header-wrapper .edit-button {
+  display: none;
+}
+
+.list-editor-wrapper .item-editor,
+.list-editor-wrapper .list-title {
+  display: none;
+}
+
+input.new-list-name {
+  height: 42px;
+  padding: 8px 8px 5px 8px;
+  width: 100%;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text-primary);
+  border: 1px solid var(--secondary-accent);
+  background-color: var(--primary-accent);
+  border-radius: 8px;
+}
+
+input.new-list-name:focus {
+  box-shadow: none;
+}
+
+input.new-list-name::placeholder {
+  color: var(--text-secondary);
+  font-weight: 900;
+}
+
+.button-wrapper-list {
+  width: 100%;
+  height: 27px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-around;
+  margin-top: auto;
+}
+
+.button-wrapper-list .simple-button {
+  opacity: 1;
+  margin: 0;
+  width: 50%;
+  height: 100%;
+}
+
+.button-wrapper-list .simple-button svg {
+  height: 15px;
+  width: 15px;
+}
+
+/* Checkbox Styling */
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
   input[type='checkbox'] {
@@ -612,7 +869,7 @@ form.expanded .confirm-button:hover {
     cursor: not-allowed;
   }
   input[type='checkbox']:hover:not(:checked):not(:disabled) {
-    --bc: var(--color-accent);
+    --bc: var(--weak-color-accent);
   }
   input[type='checkbox']:focus {
     box-shadow: 0 0 0 var(--focus);
@@ -653,3 +910,35 @@ form.expanded .confirm-button:hover {
     --r: 43deg;
   }
 }
+
+/* Footer */
+
+footer {
+  width: 100vw;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-primary);
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 2em; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  font-weight: 700; }
+  a::after {
+    content: "";
+    position: absolute;
+    width: 60%;
+    height: 1px;
+    background-color: var(--text-secondary);
+    left: 20%;
+    bottom: -18%;
+    transition: width .2s linear, left .2s linear; }
+  a:hover::after {
+    width: 90%;
+    left: 5%; }

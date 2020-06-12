@@ -1,8 +1,12 @@
 <template>
   <div id="app" class="site-wrapper">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <TheHeader v-bind:currentUser="currentUser.user"></TheHeader>
-    <TheTodoUser v-bind:user="currentUser" @updated-user="updateUsers"></TheTodoUser>
+    <TheHeader :currentUser="currentUser" :userList="users" @switch="setCurrentID" @user-list="setUserList"></TheHeader>
+    <TheTodoUser :user="currentUser" @updated-user="updateUsers"></TheTodoUser>
+    <footer>
+        <div>Entwickelt von <a href="https://github.com/lucaschultz">Luca Schultz</a> and <a href="https://github.com/MrsSnowWhite">Max Sauerzapf</a></div>
+        <div>für <em>Web- und XML-Technologien</em> an der <a href="https://www.informatik.uni-bonn.de/de">Universität Bonn</a></div>
+    </footer>
   </div>
 </template>
 
@@ -14,11 +18,11 @@ export default {
   name: 'App',
   data: function () {
     return {
-      currentID: 'g3ruzgb23',
+      currentID: '_111111111',
       users: [
         {
           user: 'default',
-          id: 'g3ruzgb23',
+          id: '_111111111',
           lists: [
             {
               name: 'TestListe',
@@ -27,75 +31,23 @@ export default {
                 {
                   name: 'TestItem 1',
                   done: false,
-                  due: '2020-06-12',
+                  cost: 1,
+                  due: '2020-06-13',
                   id: 'jfghtfztf'
                 },
                 {
-                  name: 'TestItem 1.5',
-                  done: true,
-                  due: '2020-06-12',
-                  id: 'dfkuhf6789'
-                },
-                {
                   name: 'TestItem 2',
                   done: true,
-                  due: '2020-06-12',
+                  cost: 1,
+                  due: '2020-08-12',
                   id: '684fdfhdhsghzd'
                 },
-                {
-                  name: 'TestItem 1.5',
-                  done: true,
-                  due: '2020-06-12',
-                  id: 'dfksduhf6789'
-                },
-                {
-                  name: 'TestItem 2',
-                  done: true,
-                  due: '2020-06-12',
-                  id: '684fddsfsdfhdhsghzd'
-                }
               ]
             },
             {
               name: 'Leere Liste',
               id: '87df8ewf7wd5df8',
               items: []
-            },
-            {
-              name: 'Andere Liste',
-              id: '8373738740',
-              items: [
-                {
-                  name: 'Wäsche Waschen',
-                  done: true,
-                  due: '2020-06-12',
-                  id: '832637642352'
-                },
-                {
-                  name: 'XML Lernen',
-                  done: false,
-                  due: '2020-06-12',
-                  id: '89378283387498'
-                }
-              ]
-            },
-            {
-              name: 'Noch eine Liste',
-              id: 'jbsd3e7wf',
-              items: [
-                {
-                  name: 'Kochen',
-                  done: true,
-                  due: '2020-06-12',
-                  id: 'fh37hiu78'
-                },
-                {
-                  name: 'Spazieren gehen',
-                  done: true,
-                  due: '2020-06-12',
-                  id: 'febd3z48z7tl'
-                }
-              ]
             }
           ]
         }
@@ -115,6 +67,12 @@ export default {
       } else {
         Object.assign(this.users[index], user);
       }
+    },
+    setUserList: function (userList) {
+      this.users = userList;
+    },
+    setCurrentID: function (id) {
+      this.currentID = id;
     }
   },
   components: {

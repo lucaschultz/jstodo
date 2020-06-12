@@ -3,12 +3,9 @@
     <div class="todo-list-content">
       <div class="list-header-wrapper">
         <h4 class="list-title">{{ list.name }}</h4>
-        <div class="progress-wrapper">
-          <div class="progress-bar-outer">
-            <div class="progress-bar-inner"></div>
-          </div>
-          <span>60%</span>
-        </div>
+        <EditButton @click="editList"></EditButton>
+        <div class="break"></div>
+        <ProgressBar :progress="listProgress"></ProgressBar>
       </div>
       <ul class="item-list">
         <TodoItem v-for="item in items" v-bind:item="item" v-bind:key="item.id" @updated-item="updateItems" @edit-item="setEditItem"></TodoItem>
@@ -21,6 +18,8 @@
 <script>
 import TodoItem from './TodoItem.vue';
 import ItemEditor from './ItemEditor.vue';
+import EditButton from './EditButton.vue';
+import ProgressBar from './ProgressBar.vue';
 
 export default {
   name: 'TodoList',
@@ -41,13 +40,30 @@ export default {
         return !u.done;
       });
     },
-    closedItems: function () {
+    doneItems: function () {
       return this.list.items.filter((u) => {
         return u.done;
       });
+    },
+    listProgress: function () {
+      let openCost = 0;
+      let doneCost = 0;
+      this.openItems.forEach(item => {
+        openCost += this.isNumber(item.cost) ? parseFloat(item.cost) : 0;
+      });
+      this.doneItems.forEach(item => {
+        doneCost += this.isNumber(item.cost) ? parseFloat(item.cost) : 0;
+      });
+      const totalCost = openCost + doneCost;
+      console.log(doneCost);
+      console.log(openCost);
+      return totalCost !== 0 ? Math.round(doneCost / (totalCost / 100)) : 0;
     }
   },
   methods: {
+    isNumber: function (n) {
+      return !isNaN(parseFloat(n)) && !isNaN(n - 0)
+    },
     updateItems: function (item) {
       const index = this.items.findIndex(i => item.id === i.id);
       if (index === -1) {
@@ -55,6 +71,7 @@ export default {
       } else {
         Object.assign(this.items[index], item);
       }
+      this.editItem = null;
     },
     removeItem: function (item) {
       this.items = this.items.filter(i => item.id !== i.id);
@@ -63,8 +80,15 @@ export default {
       this.removeItem(item);
       this.editItem = item;
     },
-    emitList: function () {
-      this.$emit('updated-list', {
+    editList () {
+      this.$emit('edit-list', {
+        items: this.items,
+        name: this.name,
+        id: this.id
+      });
+    },
+    updateList: function () {
+      this.$emit('update-list', {
         items: this.items,
         name: this.name,
         id: this.id
@@ -73,7 +97,7 @@ export default {
   },
   watch: {
     items: function () {
-      this.emitList();
+      this.updateList();
     },
     list: {
       deep: true,
@@ -86,7 +110,9 @@ export default {
   },
   components: {
     TodoItem,
-    ItemEditor
+    ItemEditor,
+    EditButton,
+    ProgressBar
   }
 };
 </script>

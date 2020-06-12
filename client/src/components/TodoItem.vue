@@ -24,6 +24,7 @@ export default {
       done: this.item.done,
       due: this.item.due,
       id: this.item.id,
+      cost: this.item.cost,
       extended: this.item.id + this.generateID(),
     };
   },
@@ -54,6 +55,7 @@ export default {
         name: this.name,
         done: this.done,
         due: this.due,
+        cost: this.cost,
         id: this.id
       });
     },
@@ -62,6 +64,7 @@ export default {
         name: this.name,
         done: this.done,
         due: this.due,
+        cost: this.cost,
         id: this.id
       });
     },
@@ -100,6 +103,7 @@ export default {
         this.done = newVal.done;
         this.due = newVal.due;
         this.id = newVal.id;
+        this.cost = newVal.cost;
         this.extended = newVal.id + this.generateID();
       }
     }

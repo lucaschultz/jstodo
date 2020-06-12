@@ -1,12 +1,13 @@
 <template>
-  <section id="main-content-wrapper">
-    <TodoList v-for="list in lists" v-bind:key="list.id" v-bind:list="list" @updated-list="updateLists"></TodoList>
-    <TodoList v-bind:list="lists[0]"></TodoList>
-  </section>
+  <main id="main-content-wrapper">
+    <TodoList v-for="list in lists" v-bind:key="list.id" v-bind:list="list" @update-list="updateLists" @edit-list="setEditList"></TodoList>
+    <ListEditor :list="editList" @updated-list="updateLists"></ListEditor>
+  </main>
 </template>
 
 <script>
 import TodoList from './TodoList.vue';
+import ListEditor from './ListEditor.vue';
 
 export default {
   name: 'TheTodoUser',
@@ -17,7 +18,8 @@ export default {
     return {
       name: this.user.user,
       id: this.user.id,
-      lists: this.user.lists
+      lists: this.user.lists,
+      editList: null
     };
   },
   methods: {
@@ -28,6 +30,7 @@ export default {
       } else {
         Object.assign(this.lists[index], list);
       }
+      this.editList = null;
     },
     emitUser: function () {
       this.$emit('updated-user', {
@@ -35,7 +38,14 @@ export default {
         id: this.id,
         lists: this.lists
       });
-    }
+    },
+    removeList: function (list) {
+      this.lists = this.lists.filter(l => list.id !== l.id);
+    },
+    setEditList: function (list) {
+      this.removeList(list);
+      this.editList = list;
+    },
   },
   watch: {
     lists: function () {
@@ -51,7 +61,8 @@ export default {
     }
   },
   components: {
-    TodoList
+    TodoList,
+    ListEditor
   }
 };
 </script>
