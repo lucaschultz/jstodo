@@ -17,6 +17,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // In der endpoints.mjs Datei werden die Enpunkte definiert 
 const routes = require("./routes/routes.js")(app, fs);
 
+// Error Handler um mit einem JSON Objekt zu antworten
+app.use((err, req, res, next) => {
+  res.status(err.status);
+  res.send(JSON.stringify({ 
+    error: err.name,
+    message: err.message
+  }));
+});
+
 // Starte den Server auf Port 
 const server = app.listen(3000, () => {
   console.log("listening on port %s...", server.address().port);
