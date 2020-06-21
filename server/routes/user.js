@@ -1,9 +1,9 @@
-const usersEndpoint = (app, fs) => {
+const userRoutes = (app, fs) => {
   // Konfiguration
   const dataPath = "./database.json";
 
   // Lese die Daten aus der JSON
-  app.get("/users", (req, res) => {
+  app.get("/api/user", (req, res) => {
     fs.readFile(dataPath, "utf8", (err, data) => {
       if (err) {
         throw err;
@@ -14,4 +14,4 @@ const usersEndpoint = (app, fs) => {
   });
 };
 
-module.exports = usersEndpoint;
+module.exports = userRoutes;

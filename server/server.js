@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // In der endpoints.mjs Datei werden die Enpunkte definiert 
-const routes = require("./endpoints/endpoints.js")(app, fs);
+const routes = require("./routes/routes.js")(app, fs);
 
 // Starte den Server auf Port 
 const server = app.listen(3000, () => {
