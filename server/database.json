@@ -1,0 +1,28 @@
+{
+  "user": "default",
+  "lists": [
+    {
+      "name": "Haushalt",
+      "items": [
+        {
+          "name": "Putzen",
+          "done": false,
+          "deadline": "2020-06-26",
+          "workloadFactor": "2"
+        },
+        {
+          "name": "Kochen",
+          "done": false,
+          "deadline": "",
+          "workloadFactor": "1"
+        }
+      ]
+    },
+    {
+      "name": "Leere Liste",
+      "items": [
+
+      ]
+    }
+  ]
+}
