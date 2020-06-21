@@ -1,7 +1,7 @@
 const fs = require("fs").promises;
 
 // Der Pfad zur Datenbank/JSON Datei
-const databasePath = "./database.json";
+const databasePath = "./data/database.json";
 
 // Die Standard Struktur der Datenbank als Objekt.
 // Wird von read() zurück gegeben falls ein Fehler 
