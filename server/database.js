@@ -8,7 +8,7 @@ const databasePath = "./data/database.json";
 // beim lesen der Datenbank auftritt ...
 const databaseTemplate = {
   users: [
-    {  
+    {
       user: 'default',
       lists: [
         {
@@ -33,7 +33,11 @@ const databaseTemplate = {
           items: []
         }
       ]
-    }  
+    },
+    {
+      user: 'Luca',
+      lists: []
+    } 
   ]  
 }
 
