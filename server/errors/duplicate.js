@@ -1,9 +1,9 @@
 const ExtendableError = require('./extendable.js');
 
-class MissingError extends ExtendableError {
+class DuplicateObjectError extends ExtendableError {
     constructor(name, status) {
         super(name, 404);
     }
 }
 
-module.exports = MissingError;
+module.exports = DuplicateObjectError;
