@@ -166,7 +166,7 @@ class JSONDatabase {
     const template = { user: name, lists: [] };
     const pushed = pushIfUnique (this.data.users, template, 'user');
     if (!pushed) {
-      throw new DuplicateError(`User with ID ${name} can't be be added because the ID is already assigned`);
+      throw new DuplicateError(`User with ID '${name}' can't be be added because the ID is already assigned`);
     }
     await this.save();
   }
@@ -174,7 +174,7 @@ class JSONDatabase {
   async renameUser (oldName, newName) {
     let index = this.data.users.findIndex(u => u.user.toLowerCase() === oldName.toLowerCase());
     if (index === -1) {
-      throw new MissingError(`User with ID ${oldName} can't be renamed because the ID is not assigned`);
+      throw new MissingError(`User with ID '${oldName}' can't be renamed because the ID is not assigned`);
     }
     this.data.users[index].user = newName;
     await this.save();
@@ -183,7 +183,7 @@ class JSONDatabase {
   async deleteUser (name) {
     const filtered = this.data.users.filter(u => u.user.toLowerCase() !== name.toLowerCase());
     if (equalArraysByID(filtered, this.data.users, 'user')) {
-      throw new MissingError(`User with ID ${name} can't be deleted because the ID is not assigned`);
+      throw new MissingError(`User with ID '${name}' can't be deleted because the ID is not assigned`);
     } else {
       this.data.users = filtered;
     }
@@ -197,7 +197,7 @@ class JSONDatabase {
     let lists = [];
     let index = this.data.users.findIndex(u => u.user.toLowerCase() === userName.toLowerCase());
     if (index === -1) {
-      throw new MissingError(`Lists user with ID ${userName} not found because the ID is not assigned`);
+      throw new MissingError(`Lists user with ID '${userName}' not found because the ID is not assigned`);
     }
     this.data.users[index].lists.forEach(list => {
       lists.push({ name: list.name });
@@ -205,9 +205,18 @@ class JSONDatabase {
     return lists;
   }
 
-
-
-
+  async addList(userName, listName) {
+    const template = { name: listName, items: [] };
+    let index = this.data.users.findIndex(u => u.user.toLowerCase() === userName.toLowerCase());
+    if (index === -1) {
+      throw new MissingError(`Lists user with ID '${userName}' not found because the ID is not assigned`);
+    }
+    const pushed = pushIfUnique (this.data.users[index].lists, template, 'name');
+    if (!pushed) {
+      throw new DuplicateError(`List with ID '${listName}' can't be be added to user '${userName}' because the ID is already assigned`);
+    }    
+    await this.save();
+  }
 
 }
 

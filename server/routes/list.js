@@ -32,26 +32,26 @@ const listRoutes = (app, fs) => {
       })
   });
 
-  // app.post('/api/user', (req, res, next) => {
-  //   Database.load()
-  //     .then(() => {
-  //       Database.addUser(req.body.user)
-  //         .then(() => res.send(ResponeJSON
-  //           .SUCCESS('User Added', `Successfully added user ${req.body.user} to the database`)))
-  //         .catch(err => {
-  //           logger(err.stack || err.toString());
-  //           if (err instanceof DuplicateError) {
-  //             next(err);
-  //           } else {
-  //             next(new InternalError(`Internal error adding User with ID ${req.body.user} to the database`));
-  //           }
-  //         })
-  //     })
-  //     .catch(err => {
-  //       logger(err.stack || err.toString());
-  //       next(new InternalError('Error loading Database'));
-  //     });
-  // });
+  app.post('/api/list/:username', (req, res, next) => {
+    Database.load()
+      .then(() => {
+        Database.addList(req.params['username'], req.body.name)
+          .then(() => res.send(ResponeJSON
+            .SUCCESS('List Added', `Successfully added list ${req.body.name} of user ${req.params['username']} to the database`)))
+          .catch(err => {
+            logger(err.stack || err.toString());
+            if (err instanceof MissingError || err instanceof DuplicateError) {
+              next(err);
+            } else {
+              next(new InternalError(`Internal error adding list ${req.body.name} of user with ID ${req.params['username']} to the database`));
+            }
+          })
+      })
+      .catch(err => {
+        logger(err.stack || err.toString());
+        next(new InternalError('Error loading Database'));
+      });
+  });
 
   // app.delete('/api/user', (req, res, next) => {
   //   Database.load()
