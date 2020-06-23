@@ -1,5 +1,8 @@
 const fs = require("fs").promises;
 const logger = require("./utils/logger.js");
+const MissingError = require("./errors/missing.js");
+const DuplicateError = require("./errors/duplicate.js");
+
 
 // Der Pfad zur Datenbank/JSON Datei
 const databasePath = "./data/database.json";
@@ -42,6 +45,38 @@ const databaseTemplate = {
   ]  
 }
 
+function equalArraysByID (arr1, arr2, keyOfID) {
+
+    // Falls eines der Arrays kein Array ist oder die Arrays eine unterschiedliche
+    // Länge haben ...
+    if (!Array.isArray(arr1) || !Array.isArray(arr2) || arr1.length !== arr2.length) {
+      // ... sind sie nicht gleich!
+      return false;
+    }
+
+    // Compare Funktion zum sortieren nach der ID
+    const compare = (a, b) => {
+        return a[keyOfID].localeCompare(b);
+    }
+
+    // Erstelle jweils ein Dublikat der Arrays
+    // um die originale nicht zu verändern und
+    // sortiere die Duplikate nach der ID
+    var arr1 = arr1.concat().sort(compare);
+    var arr2 = arr2.concat().sort(compare);
+
+    // Vergleiche jeweils zwei Objekte in den Arrays 
+    // Paarweise ob sie die selbe ID haben.
+    for (var i = 0; i < arr1.length; i++) {
+        if (arr1[i][keyOfID] !== arr2[i][keyOfID]) {
+            return false;
+        }
+    }
+
+    // Falls bis hierhei kein false zurück gegeben wurde
+    // sind die Array gleich.
+    return true;
+}
 
 function incrementName (string) {
     re = /\(\d+\)/g
@@ -122,7 +157,7 @@ class JSONDatabase {
     const template = { user: name, lists: [] };
     const pushed = pushIfUnique (this.data.users, template, 'user');
     if (!pushed) {
-      throw new Error(`User tried to add already existing user ${name}`);
+      throw new DuplicateError(`User with ID ${name} can't be be added because the ID is already assigned`);
     }
     await this.save();
   }
@@ -130,14 +165,19 @@ class JSONDatabase {
   async renameUser (oldName, newName) {
     let index = this.data.users.findIndex(u => u.user === oldName);
     if (index === -1) {
-      throw new Error(`User tried to rename non-existent user ${oldName}`);
+      throw new MissingError(`User with ID ${oldName} can't be renamed because the ID is not assigned`);
     }
     this.data.users[index].user = newName;
     await this.save();
   }
 
   async deleteUser (name) {
-    this.data.users = this.data.users.filter(u => u.user !== name);
+    const filtered = this.data.users.filter(u => u.user !== name);
+    if (equalArraysByID(filtered, this.data.users, 'user')) {
+      throw new MissingError(`User with ID ${name} can't be deleted because the ID is not assigned`);
+    } else {
+      this.data.users = filtered;
+    }
     await this.save();
   }
 
