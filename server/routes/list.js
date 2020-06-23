@@ -74,26 +74,26 @@ const listRoutes = (app, fs) => {
   //     });
   // });
 
-  // app.put('/api/user/:name', (req, res, next) => {
-  //   Database.load()
-  //     .then(() => {
-  //       Database.renameUser(req.params['name'], req.body.user)
-  //         .then(() => res.send(ResponeJSON
-  //           .SUCCESS('User Renamed', `Successfully renamed user ${req.params['name']} in the database`)))
-  //         .catch(err => {
-  //           logger(err.stack || err.toString());
-  //           if (err instanceof MissingError) {
-  //             next(err);
-  //           } else {
-  //             next(new InternalError(`Internal error renaming user with ID ${req.body.user} in the database`));
-  //           }          
-  //         })
-  //     })
-  //     .catch(err => {
-  //       logger(err.stack || err.toString());
-  //       next(new InternalError('Error loading database'));    
-  //     });
-  // });
+  app.patch('/api/list/:username/:listname', (req, res, next) => {
+    Database.load()
+      .then(() => {
+        Database.renameList(req.params['username'], req.params['listname'], req.body.name)
+          .then(() => res.send(ResponeJSON
+            .SUCCESS('List Renamed', `Successfully renamed list ${req.params['listname']} of user ${req.params['username']} in the database`)))
+          .catch(err => {
+            logger(err.stack || err.toString());
+            if (err instanceof MissingError) {
+              next(err);
+            } else {
+              next(new InternalError(`Internal error renaming list with ID ${req.params['listname']} of user ${req.params['username']} in the database`));
+            }
+          })
+      })
+      .catch(err => {
+        logger(err.stack || err.toString());
+        next(new InternalError('Error loading database'));    
+      });
+  });
 
 };
 

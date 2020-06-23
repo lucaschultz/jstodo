@@ -213,8 +213,22 @@ class JSONDatabase {
     }
     const pushed = pushIfUnique (this.data.users[index].lists, template, 'name');
     if (!pushed) {
-      throw new DuplicateError(`List with ID '${listName}' can't be be added to user '${userName}' because the ID is already assigned`);
+      throw new DuplicateError(`List of with ID '${listName}' can't be be added to user '${userName}' because the ID is already assigned`);
     }    
+    await this.save();
+  }
+  
+  async renameList(userName, oldListName, newListName) {
+    let userIndex = this.data.users.findIndex(u => u.user.toLowerCase() === userName.toLowerCase());
+    if (userIndex === -1) {
+      throw new MissingError(`User with ID '${userName}' not found because the ID is not assigned`);
+    }
+    let listIndex = this.data.users[userIndex].lists
+      .findIndex(l => l.name.toLowerCase() === oldListName.toLowerCase());
+    if (listIndex === -1) {
+      throw new MissingError(`List with with ID '${oldListName}' of user '${userName}' not found because the ID is not assigned`);
+    }
+    this.data.users[userIndex].lists[listIndex].name = newListName;
     await this.save();
   }
 
