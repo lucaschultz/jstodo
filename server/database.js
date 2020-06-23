@@ -200,7 +200,7 @@ class JSONDatabase {
       throw new MissingError(`Lists user with ID '${userName}' not found because the ID is not assigned`);
     }
     this.data.users[index].lists.forEach(list => {
-      lists.push({ name: list.name });
+      lists.push(list);
     });
     return lists;
   }
