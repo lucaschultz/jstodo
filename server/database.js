@@ -253,13 +253,16 @@ class JSONDatabase {
     await this.save();
   }
 
-  async updateItem(userName, listName, item) {
-    this.deleteItem(userName, listName, item.name)
-      .then(() => this.addItem(userName, itemName, item));
+  async updateItem(userName, listName, updatedItem) {
+    const oldItem = this.findItem(userName, listName, updatedItem.name);
+    Object.keys(updatedItem).forEach(key => {
+      oldItem[key] = updatedItem[key];
+    });
+    await this.save();
   }
 
   async deleteItem(userName, listName, itemName) {
-    const list = this.findListe(userName, listName);
+    const list = this.findList(userName, listName);
     list.items = deleteObjectInArray(list.items, "name", itemName, "Item");
     await this.save();
   }
