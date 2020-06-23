@@ -111,7 +111,7 @@ function pushIfUnique (arr, obj, key, type, rename = false) {
     // ... und nicht umbennant werden soll ...
     if (!rename) {
       // ... wird das Objekt nicht hinzugefügt.
-      throw new DuplicateError(`${type} with ID '${name}' can't be be added because the ID is already assigned`);
+      throw new DuplicateError(`${type} with ID '${obj[key]}' can't be be added because the ID is already assigned`);
     } else {
       // Wenn umbennant werden soll wird der Key geändert ... 
       obj[key] = incrementName(obj[key]);
@@ -132,7 +132,7 @@ function findObjectInArray (arr, key, value) {
 function deleteObjectInArray (arr, key, value, type) {
   const filtered = arr.filter(u => u[key].toLowerCase() !== value.toLowerCase());
   if (equalArraysByID(filtered, arr, key)) {
-    throw new MissingError(`${type} with ID '${name}' can't be deleted because the ID is not assigned`);
+    throw new MissingError(`${type} with ID '${value}' can't be deleted because the ID is not assigned`);
   } else {
     return filtered;
   }
@@ -208,7 +208,7 @@ class JSONDatabase {
   }
 
   async renameUser (oldName, newName) {
-    user = this.findUser(oldName);
+    const user = this.findUser(oldName);
     user.user = newName;
     await this.save();
   }
@@ -227,7 +227,7 @@ class JSONDatabase {
 
   async addList(userName, listName) {
     const newList = { name: listName, items: [] };
-    const user = this.findUser(username);
+    const user = this.findUser(userName);
     pushIfUnique(user.lists, newList, 'name', 'List');
     await this.save();
   }
