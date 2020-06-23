@@ -63,7 +63,7 @@ const userRoutes = (app, fs) => {
       });
   });
 
-  app.put('/api/user/:name', (req, res, next) => {
+  app.patch('/api/user/:name', (req, res, next) => {
     Database.load()
       .then(() => {
         Database.renameUser(req.params['name'], req.body.user)
