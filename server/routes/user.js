@@ -65,7 +65,7 @@ const userRoutes = (app, fs) => {
       .then(() => {
         Database.renameUser(req.params['name'], req.body.user)
           .then(() => res.send(ResponeJSON
-            .SUCCESS('User Renamed', `Successfully renamed user ${req.body.user} in the database`)))
+            .SUCCESS('User Renamed', `Successfully renamed user ${req.params['name']} in the database`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError) {

@@ -92,7 +92,7 @@ function incrementName (string) {
 
 function inArray (arr, obj, key) {
   // Finde den Index des ersten Objekts mit dem selben Key im Array
-  const index = arr.findIndex(item => item[key] === obj[key]);
+  const index = arr.findIndex(item => item[key].toLowerCase() === obj[key].toLowerCase());
   
   if (index === -1) {
     // Falls kein solches Objekt existiert ...
@@ -163,7 +163,7 @@ class JSONDatabase {
   }
 
   async renameUser (oldName, newName) {
-    let index = this.data.users.findIndex(u => u.user === oldName);
+    let index = this.data.users.findIndex(u => u.user.toLowerCase() === oldName.toLowerCase());
     if (index === -1) {
       throw new MissingError(`User with ID ${oldName} can't be renamed because the ID is not assigned`);
     }
@@ -172,7 +172,7 @@ class JSONDatabase {
   }
 
   async deleteUser (name) {
-    const filtered = this.data.users.filter(u => u.user !== name);
+    const filtered = this.data.users.filter(u => u.user.toLowerCase() !== name.toLowerCase());
     if (equalArraysByID(filtered, this.data.users, 'user')) {
       throw new MissingError(`User with ID ${name} can't be deleted because the ID is not assigned`);
     } else {
