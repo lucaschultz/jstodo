@@ -26,7 +26,7 @@ npm start
 
 #### Web Service API
 
-- [ ] **Endpunkt** `GET /api/list/{username}` – Liefert alle Todo-Listen des angegebenen Benutzers als Array von list-Objekten.
+- [x] **Endpunkt** `GET /api/list/{username}` – Liefert alle Todo-Listen des angegebenen Benutzers als Array von list-Objekten.
 - [ ] **Endpunkt** `POST /api/list/{username}` – Legt eine neue leere Todo-Liste für den Benutzer an. Im Request wird ein list-Objekt erwartet, das nur die Property name enthält.
 - [ ] **Endpunkt** `PATCH /api/list/{username}/{listname}` – Benennt die Todo-Liste des Benutzers um. Im Request wird ein list-Objekt erwartet, das nur die Property name enthält.
 - [ ] **Endpunkt** `DELETE /api/list/{username}/{listname} ` – Löscht die Todo-Liste des Benutzers.
