@@ -135,6 +135,8 @@ class JSONDatabase {
     this.data = null;
   }
 
+  // Universelle Methoden
+
   async save () {
     await fs.writeFile(this.path, JSON.stringify(this.data, null, 2), 'utf8');
   }
@@ -144,6 +146,13 @@ class JSONDatabase {
     this.data = await fs.readFile(this.path, 'utf8')
       .then(data => JSON.parse(data));
   }
+
+  static async new (path, template = databaseTemplate) {
+    await fs.writeFile(path, JSON.stringify(template, null, 2), 'utf8');
+  }
+
+
+  // Methoden für die api/user Route
 
   get users () {
     let result = [];
@@ -181,9 +190,24 @@ class JSONDatabase {
     await this.save();
   }
 
-  static async new (path, template = databaseTemplate) {
-    await fs.writeFile(path, JSON.stringify(template, null, 2), 'utf8');
+
+  // Methoden für die api/list Route
+
+  async getLists(userName) {
+    let lists = [];
+    let index = this.data.users.findIndex(u => u.user.toLowerCase() === userName.toLowerCase());
+    if (index === -1) {
+      throw new MissingError(`Lists user with ID ${userName} not found because the ID is not assigned`);
+    }
+    this.data.users[index].lists.forEach(list => {
+      lists.push({ name: list.name });
+    });
+    return lists;
   }
+
+
+
+
 
 }
 

@@ -1,5 +1,6 @@
 // Importiere den /users Endpoint
 const userRoutes = require("./user");
+const listRoutes = require("./list");
 
 const appRoutes = (app, fs) => {
   // Standardnachricht
@@ -9,6 +10,9 @@ const appRoutes = (app, fs) => {
 
   // Verwende den /users Endpoint
   userRoutes(app, fs);
+  
+  // Verwende den /users Endpoint
+  listRoutes(app, fs);
 };
 
 // Exportiere die Endpoints um sie in server.js
