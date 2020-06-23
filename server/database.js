@@ -207,7 +207,8 @@ class JSONDatabase {
 
   async addList(userName, listName) {
     const template = { name: listName, items: [] };
-    let index = this.data.users.findIndex(u => u.user.toLowerCase() === userName.toLowerCase());
+    let index = this.data.users.findIndex(u => {
+      return u.user.toLowerCase() === userName.toLowerCase()});
     if (index === -1) {
       throw new MissingError(`Lists user with ID '${userName}' not found because the ID is not assigned`);
     }
@@ -217,12 +218,8 @@ class JSONDatabase {
     }    
     await this.save();
   }
-  
+
   async renameList(userName, oldListName, newListName) {
-    let userIndex = this.data.users.findIndex(u => u.user.toLowerCase() === userName.toLowerCase());
-    if (userIndex === -1) {
-      throw new MissingError(`User with ID '${userName}' not found because the ID is not assigned`);
-    }
     let listIndex = this.data.users[userIndex].lists
       .findIndex(l => l.name.toLowerCase() === oldListName.toLowerCase());
     if (listIndex === -1) {
@@ -232,6 +229,20 @@ class JSONDatabase {
     await this.save();
   }
 
+  async deleteList (userName, listName) {
+    let userIndex = this.data.users.findIndex(u => u.user.toLowerCase() === userName.toLowerCase());
+    if (userIndex === -1) {
+      throw new MissingError(`User with ID '${userName}' not found because the ID is not assigned`);
+    }
+    const filtered = this.data.users[userIndex].lists
+      .filter(l => l.name.toLowerCase() !== listName.toLowerCase());
+    if (equalArraysByID(filtered, this.data.users[userIndex].lists, 'user')) {
+      throw new MissingError(`User with ID '${listName}' of user '${userName}' can't be deleted because the ID is not assigned`);
+    } else {
+      this.data.users[userIndex].lists = filtered;
+    }
+    await this.save();
+  }
 }
 
 

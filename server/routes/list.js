@@ -53,26 +53,6 @@ const listRoutes = (app, fs) => {
       });
   });
 
-  // app.delete('/api/user', (req, res, next) => {
-  //   Database.load()
-  //     .then(() => {
-  //       Database.deleteUser(req.body.user)
-  //         .then(() => res.send(ResponeJSON
-  //           .SUCCESS('User Deleted', `Successfully deleted user ${req.body.user} from the database`)))
-  //         .catch(err => {
-  //           logger(err.stack || err.toString());
-  //           if (err instanceof MissingError) {
-  //             next(err);
-  //           } else {
-  //             next(new InternalError(`Internal error deleting user with ID ${req.body.user} from the database`));
-  //           }
-  //         });
-  //     })
-  //     .catch(err => {
-  //       logger(err.stack || err.toString());
-  //       next(new InternalError('Error loading database'));    
-  //     });
-  // });
 
   app.patch('/api/list/:username/:listname', (req, res, next) => {
     Database.load()
@@ -95,6 +75,26 @@ const listRoutes = (app, fs) => {
       });
   });
 
+  app.delete('/api/list/:username/:listname', (req, res, next) => {
+    Database.load()
+      .then(() => {
+        Database.deleteList(req.params['username'], req.params['listname'])
+          .then(() => res.send(ResponeJSON
+            .SUCCESS('List Deleted', `Successfully deleted list ${req.params['listname']} of user ${req.params['username']} from the database`)))
+          .catch(err => {
+            logger(err.stack || err.toString());
+            if (err instanceof MissingError) {
+              next(err);
+            } else {
+              next(new InternalError(`Internal error deleting list with ID ${req.params['listname']} of user ${req.params['username']} from the database`));
+            }
+          });
+      })
+      .catch(err => {
+        logger(err.stack || err.toString());
+        next(new InternalError('Error loading database'));    
+      });
+  });
 };
 
 module.exports = listRoutes;
