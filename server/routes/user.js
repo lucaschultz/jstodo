@@ -42,18 +42,18 @@ const userRoutes = (app, fs) => {
       });
   });
 
-  app.delete('/api/user', (req, res, next) => {
+  app.delete('/api/user/:name', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.deleteUser(req.body.user)
+        Database.deleteUser(req.params['name'])
           .then(() => res.send(ResponeJSON
-            .SUCCESS('User Deleted', `Successfully deleted user ${req.body.user} from the database`)))
+            .SUCCESS('User Deleted', `Successfully deleted user ${req.params['name']} from the database`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
-              next(new InternalError(`Internal error deleting user with ID ${req.body.user} from the database`));
+              next(new InternalError(`Internal error deleting user with ID ${req.params['name']} from the database`));
             }
           });
       })
