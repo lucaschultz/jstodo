@@ -34,7 +34,7 @@ npm start
 - [ ] **Endpunkt** `PUT /api/item/{username}/{listname}/{itemname}` – Überschreibt den Eintrag in der Todo-Liste des Benutzers. Im Request wird ein item- Objekt erwartet, das mindestens die Properties name und done enthält.
 - [ ] **Endpunkt** `DELETE /api/item/{username}/{listname}/{itemname}` – Löscht den Eintrag in der Todo-Liste des Benutzers.
 - [x] **Endpunkt** `GET /api/user` – Liefert eine Liste aller vorhandenen Benutzer als Array von user- Objekten, die jeweils nur nur die Property user enthalten.
-- [ ] **Endpunkt** `POST /api/user` – Legt einen neuen Benutzer an. Im Request wird ein user-Objekt erwartet, das nur die Property user enthält.
+- [x] **Endpunkt** `POST /api/user` – Legt einen neuen Benutzer an. Im Request wird ein user-Objekt erwartet, das nur die Property user enthält.
 - [ ] **Endpunkt** `PATCH /api/user/{username}` – Ändert den Namen des Benutzers. Im Request wird ein user-Objekt erwartet, das nur die Property user enthält.
 - [ ] **Endpunkt** `DELETE /api/user ` – Löscht den Benutzer.
 - [ ] Wenn unkorrekte URLs angefragt werden, die jeweils verlangten URL-Parameter username, listname oder itemname nicht in der Datenbank des Servers vorhanden sind oder der Nachrichtenrumpf unkorrektes oder unvollständiges JSON enthält, führen die Endpunkte keine Änderung an der Datenbank aus, sondern liefern einen geeigneten Status-Code und eine sinnvolle Fehlermeldung zurück, letztere ebenfalls im JSON-Format , z.B.: `{ "error": "missing JSON in body" }`.
