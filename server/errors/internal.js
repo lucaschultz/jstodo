@@ -1,8 +1,8 @@
 const ExtendableError = require('./extendable.js');
 
 class InternalError extends ExtendableError {
-    constructor(name, status) {
-        super(name, 500);
+    constructor(message, status = 500) {
+        super(message, status);
     }
 }
 

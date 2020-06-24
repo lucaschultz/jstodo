@@ -1,8 +1,8 @@
 const ExtendableError = require('./extendable.js');
 
 class DuplicateObjectError extends ExtendableError {
-    constructor(name, status) {
-        super(name, 404);
+    constructor(message, status = 404) {
+        super(message, status);
     }
 }
 
