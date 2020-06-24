@@ -2,6 +2,7 @@
 const userRoutes = require("./user");
 const listRoutes = require("./list");
 const itemRoutes = require("./item");
+const invalidRoutes = require("./invalid");
 
 const appRoutes = (app, fs) => {
   // Standardnachricht
@@ -17,6 +18,9 @@ const appRoutes = (app, fs) => {
   
   // Verwende den /users Endpoint
   itemRoutes(app, fs);
+  
+  // Alle anderen Routen sind invalid
+  invalidRoutes(app, fs);
 };
 
 // Exportiere die Endpoints um sie in server.js
