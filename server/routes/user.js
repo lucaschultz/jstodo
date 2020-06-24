@@ -75,7 +75,7 @@ const userRoutes = (app, fs) => {
             .SUCCESS('User Renamed', `Successfully renamed user with ID '${oldUserName}' in the database`)))
           .catch(err => {
             logger(err.stack || err.toString());
-            if (err instanceof MissingError) {
+            if (err instanceof MissingError || err instanceof DuplicateError) {
               next(err);
             } else {
               next(new InternalError(`Internal error renaming user with ID '${oldUserName}' in the database`));

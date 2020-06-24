@@ -68,7 +68,7 @@ const listRoutes = (app, fs) => {
             .SUCCESS('List Renamed', `Successfully renamed list with ID '${oldListName}' of user '${userName}'`)))
           .catch(err => {
             logger(err.stack || err.toString());
-            if (err instanceof MissingError) {
+            if (err instanceof MissingError || err instanceof DuplicateError) {
               next(err);
             } else {
               next(new InternalError(`Internal error renaming list with ID '${oldListName}' of user '${userName}'`));

@@ -36,18 +36,19 @@ const itemRoutes = (app, fs) => {
       });
   });
 
-  app.put('/api/item/:username/:listname', (req, res, next) => {
+  app.put('/api/item/:username/:listname/:itemname', (req, res, next) => {
     Database.load()
       .then(() => {
         const userName = req.params['username'];
         const listName = req.params['listname'];
+        const itemName = req.params['itemname'];
         const item = req.body;
-        Database.updateItem(userName, listName, item)
+        Database.updateItem(userName, listName, itemName, item)
           .then(() => res.send(ResponeJSON
             .SUCCESS('Item Updated', `Successfully updated item '${item.name}' in list '${listName}' of user '${userName}'`)))
           .catch(err => {
             logger(err.stack || err.toString());
-            if (err instanceof MissingError) {
+            if (err instanceof MissingError || err instanceof DuplicateError) {
               next(err);
             } else {
               next(new InternalError(`Internal error updating item '${item.name}' in list '${listName}' of user '${userName}'`));

@@ -103,19 +103,16 @@ function inArray (arr, obj, key) {
   }
 }
 
-function renameIfUnique (arr, key, oldValue, newValue, type) {
+function renameIfUnique (arr, key, oldValue, newValue, type = "Item") {
   // Finde den Index des ersten Objekts mit dem selben Key im Array
   const index = arr.findIndex(item => item[key].toLowerCase() === newValue.toLowerCase());
   
   if (index === -1) {
     // Falls kein solches Objekt existiert ...
-    return false;
+    return newValue;
   } else {
     // Falls ein solches Objekt existiert ...
-    return true;
-  }
-  if (inArray(arr, obj, key)) {
-    throw new DuplicateError(`${type} with ID '${obj[key]}' can't be be renamed because the ID is already assigned`);
+    throw new DuplicateError(`${type} with ID '${oldValue}' can't be be renamed to '${newValue}' because the ID is already assigned`);
   }
 }
 
@@ -225,7 +222,7 @@ class JSONDatabase {
 
   async renameUser (oldName, newName) {
     const user = this.findUser(oldName);
-    user.user = renameIfUnique(this.data.users, user, 'user', newName, 'User');
+    user.user = renameIfUnique(this.data.users, 'user', oldName, newName, 'User');
     await this.save();
   }
 
@@ -250,7 +247,8 @@ class JSONDatabase {
 
   async renameList(userName, oldListName, newListName) {
     const list = this.findList(userName, oldListName);
-    list.name = newListName;
+    const user = this.findUser(userName);
+    list.name = renameIfUnique(user.lists, 'name', oldListName, newListName, 'List');
     await this.save();
   }
 
@@ -269,10 +267,15 @@ class JSONDatabase {
     await this.save();
   }
 
-  async updateItem(userName, listName, updatedItem) {
-    const oldItem = this.findItem(userName, listName, updatedItem.name);
+  async updateItem(userName, listName, itemName, updatedItem) {
+    const oldItem = this.findItem(userName, listName, itemName);
+    const list = this.findList(userName, listName);
     Object.keys(updatedItem).forEach(key => {
-      oldItem[key] = updatedItem[key];
+      if (key === 'name') {
+        oldItem.name = renameIfUnique(list.items, 'name', itemName, updatedItem.name, 'Item');
+      } else {
+        oldItem[key] = updatedItem[key];
+      }
     });
     await this.save();
   }
