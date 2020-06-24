@@ -24,15 +24,16 @@ const userRoutes = (app, fs) => {
   app.post('/api/user', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.addUser(req.body.user)
+        const userName = req.body.user;
+        Database.addUser(userName)
           .then(() => res.send(ResponeJSON
-            .SUCCESS('User Added', `Successfully added user ${req.body.user} to the database`)))
+            .SUCCESS('User Added', `Successfully added user with ID '${userName}' to the database`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof DuplicateError) {
               next(err);
             } else {
-              next(new InternalError(`Internal error adding User with ID ${req.body.user} to the database`));
+              next(new InternalError(`Internal error adding User with ID '${userName}' to the database`));
             }
           })
       })
@@ -45,15 +46,16 @@ const userRoutes = (app, fs) => {
   app.delete('/api/user/:name', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.deleteUser(req.params['name'])
+        const userName = req.params['name'];
+        Database.deleteUser(userName)
           .then(() => res.send(ResponeJSON
-            .SUCCESS('User Deleted', `Successfully deleted user ${req.params['name']} from the database`)))
+            .SUCCESS('User Deleted', `Successfully deleted user with ID '${userName}' from the database`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
-              next(new InternalError(`Internal error deleting user with ID ${req.params['name']} from the database`));
+              next(new InternalError(`Internal error deleting user with ID '${userName}' from the database`));
             }
           });
       })
@@ -66,15 +68,17 @@ const userRoutes = (app, fs) => {
   app.patch('/api/user/:name', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.renameUser(req.params['name'], req.body.user)
+        const oldUserName = req.params['name'];
+        const newUserName = req.body.user;
+        Database.renameUser(oldUserName, newUserName)
           .then(() => res.send(ResponeJSON
-            .SUCCESS('User Renamed', `Successfully renamed user ${req.params['name']} in the database`)))
+            .SUCCESS('User Renamed', `Successfully renamed user with ID '${oldUserName}' in the database`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
-              next(new InternalError(`Internal error renaming user with ID ${req.body.user} in the database`));
+              next(new InternalError(`Internal error renaming user with ID '${oldUserName}' in the database`));
             }          
           })
       })

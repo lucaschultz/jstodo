@@ -15,14 +15,15 @@ const listRoutes = (app, fs) => {
   app.get('/api/list/:username', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.getLists(req.params['username'])
+        const userName = req.params['username'];
+        Database.getLists()
           .then(lists => res.send(JSON.stringify(lists)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
-              next(new InternalError(`Internal getting lists of user with ID ${req.body.user} from the database`));
+              next(new InternalError(`Internal getting lists of user with ID '${userName}'`));
             }            
           })
       })
@@ -35,15 +36,17 @@ const listRoutes = (app, fs) => {
   app.post('/api/list/:username', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.addList(req.params['username'], req.body.name)
+        const userName = req.params['username'];
+        const listName = req.body.name;
+        Database.addList(userName, listName)
           .then(() => res.send(ResponeJSON
-            .SUCCESS('List Added', `Successfully added list ${req.body.name} of user ${req.params['username']} to the database`)))
+            .SUCCESS('List Added', `Successfully added list with ID '${listName}' of user '${userName}'`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError || err instanceof DuplicateError) {
               next(err);
             } else {
-              next(new InternalError(`Internal error adding list ${req.body.name} of user with ID ${req.params['username']} to the database`));
+              next(new InternalError(`Internal error adding list with ID '${listName}' of user '${userName}'`));
             }
           })
       })
@@ -57,15 +60,18 @@ const listRoutes = (app, fs) => {
   app.patch('/api/list/:username/:listname', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.renameList(req.params['username'], req.params['listname'], req.body.name)
+        const userName = req.params['username'];
+        const oldListName = req.params['listname'];
+        const newListName = req.body.name;
+        Database.renameList(userName, oldListName, newListName)
           .then(() => res.send(ResponeJSON
-            .SUCCESS('List Renamed', `Successfully renamed list ${req.params['listname']} of user ${req.params['username']} in the database`)))
+            .SUCCESS('List Renamed', `Successfully renamed list with ID '${oldListName}' of user '${userName}'`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
-              next(new InternalError(`Internal error renaming list with ID ${req.params['listname']} of user ${req.params['username']} in the database`));
+              next(new InternalError(`Internal error renaming list with ID '${oldListName}' of user '${userName}'`));
             }
           })
       })
@@ -78,15 +84,17 @@ const listRoutes = (app, fs) => {
   app.delete('/api/list/:username/:listname', (req, res, next) => {
     Database.load()
       .then(() => {
-        Database.deleteList(req.params['username'], req.params['listname'])
+        const userName = req.params['username'];
+        const oldListName = req.params['listname'];
+        Database.deleteList(userName, oldListName)
           .then(() => res.send(ResponeJSON
-            .SUCCESS('List Deleted', `Successfully deleted list ${req.params['listname']} of user ${req.params['username']} from the database`)))
+            .SUCCESS('List Deleted', `Successfully deleted list with ID '${oldListName}' of user '${userName}'`)))
           .catch(err => {
             logger(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
-              next(new InternalError(`Internal error deleting list with ID ${req.params['listname']} of user ${req.params['username']} from the database`));
+              next(new InternalError(`Internal error deleting list with ID '${oldListName}' of user '${userName}'`));
             }
           });
       })
