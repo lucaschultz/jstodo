@@ -103,6 +103,22 @@ function inArray (arr, obj, key) {
   }
 }
 
+function renameIfUnique (arr, key, oldValue, newValue, type) {
+  // Finde den Index des ersten Objekts mit dem selben Key im Array
+  const index = arr.findIndex(item => item[key].toLowerCase() === newValue.toLowerCase());
+  
+  if (index === -1) {
+    // Falls kein solches Objekt existiert ...
+    return false;
+  } else {
+    // Falls ein solches Objekt existiert ...
+    return true;
+  }
+  if (inArray(arr, obj, key)) {
+    throw new DuplicateError(`${type} with ID '${obj[key]}' can't be be renamed because the ID is already assigned`);
+  }
+}
+
 function pushIfUnique (arr, obj, key, type, rename = false) {
   // Teste ob ein Objekt mit dem selben Key existiert 
   const exists = inArray(arr, obj, key)
@@ -209,7 +225,7 @@ class JSONDatabase {
 
   async renameUser (oldName, newName) {
     const user = this.findUser(oldName);
-    user.user = newName;
+    user.user = renameIfUnique(this.data.users, user, 'user', newName, 'User');
     await this.save();
   }
 
