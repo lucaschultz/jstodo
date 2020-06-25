@@ -230,7 +230,7 @@ class JSONDatabase {
   }
 
 
-  // Methoden für die api/list Route
+  // Methoden für die api/list/username Route
 
   async getLists(userName) {
     return this.findUser(userName).lists;
