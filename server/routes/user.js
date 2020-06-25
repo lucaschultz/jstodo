@@ -2,15 +2,29 @@
 const Database = require("../database.js");
 const logger = require("../utils/logger.js");
 const ResponeJSON = require("../utils/response.js");
+const Validate = require("../utils/validate.js");
 
 // Costom Error Imports
 const MissingError = require("../errors/missing.js");
 const InternalError = require("../errors/internal.js");
 const DuplicateError = require("../errors/duplicate.js");
-
+const InvalidObjectError = require("../errors/object.js");
 
 
 const userRoutes = (app, fs) => {
+
+  app.all(/api\/user\/.*/, function (req, res, next) {
+    Validate.USER(req.body)
+      .then(() => next())
+      .catch(err => {
+        logger(err.stack || err.toString());
+        if (err instanceof InvalidObjectError) {
+          next(err);
+        } else {
+          next(new InternalError(`Internal error validating request body against user requirements`));
+        }
+      });
+  })
 
   app.get('/api/user', (req, res, next) => {
     Database.load()

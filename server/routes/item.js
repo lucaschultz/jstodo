@@ -2,15 +2,30 @@
 const Database = require("../database.js");
 const logger = require("../utils/logger.js");
 const ResponeJSON = require("../utils/response.js");
+const Validate = require("../utils/validate.js");
 
 // Costom Error Imports
 const MissingError = require("../errors/missing.js");
 const InternalError = require("../errors/internal.js");
 const DuplicateError = require("../errors/duplicate.js");
+const InvalidObjectError = require("../errors/object.js");
 
 
 
 const itemRoutes = (app, fs) => {
+
+  app.all(/api\/item\/.*/, function (req, res, next) {
+    Validate.ITEM(req.body)
+      .then(() => next())
+      .catch(err => {
+        logger(err.stack || err.toString());
+        if (err instanceof InvalidObjectError) {
+          next(err);
+        } else {
+          next(new InternalError(`Internal error validating request body against item requirements`));
+        }
+      });
+  })
 
   app.post('/api/item/:username/:listname', (req, res, next) => {
     Database.load()

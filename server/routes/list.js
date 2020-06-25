@@ -2,21 +2,36 @@
 const Database = require("../database.js");
 const logger = require("../utils/logger.js");
 const ResponeJSON = require("../utils/response.js");
+const Validate = require("../utils/validate.js");
 
 // Costom Error Imports
 const MissingError = require("../errors/missing.js");
 const InternalError = require("../errors/internal.js");
 const DuplicateError = require("../errors/duplicate.js");
+const InvalidObjectError = require("../errors/object.js");
 
 
 
 const listRoutes = (app, fs) => {
 
+  app.all(/api\/list\/.*/, function (req, res, next) {
+    Validate.LIST(req.body)
+      .then(() => next())
+      .catch(err => {
+        logger(err.stack || err.toString());
+        if (err instanceof InvalidObjectError) {
+          next(err);
+        } else {
+          next(new InternalError(`Internal error validating request body against list requirements`));
+        }
+      });
+  })
+
   app.get('/api/list/:username', (req, res, next) => {
     Database.load()
       .then(() => {
         const userName = req.params['username'];
-        Database.getLists()
+        Database.getLists(userName)
           .then(lists => res.send(JSON.stringify(lists)))
           .catch(err => {
             logger(err.stack || err.toString());
