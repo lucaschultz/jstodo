@@ -271,7 +271,9 @@ class JSONDatabase {
     const list = this.findList(userName, listName);
     Object.keys(updatedItem).forEach(key => {
       if (key === 'name') {
-        oldItem.name = renameIfUnique(list.items, 'name', itemName, updatedItem.name, 'Item');
+        if (itemName !== updatedItem.name) {
+          oldItem.name = renameIfUnique(list.items, 'name', itemName, updatedItem.name, 'Item');
+        }
       } else {
         oldItem[key] = updatedItem[key];
       }
