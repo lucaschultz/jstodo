@@ -8,8 +8,6 @@ const DuplicateError = require("./errors/duplicate.js");
 const databasePath = "./data/database.json";
 
 // Die Standard Struktur der Datenbank als Objekt.
-// Wird von read() zurück gegeben falls ein Fehler 
-// beim lesen der Datenbank auftritt ...
 const databaseTemplate = {
   users: [
     {
@@ -22,13 +20,13 @@ const databaseTemplate = {
               name: 'Putzen',
               done: false,
               deadline: '2020-06-26',
-              workloadFactor: '2'
+              workloadFactor: 2
             },
             {
               name: 'Kochen',
               done: false,
               deadline: '',
-              workloadFactor: '1'
+              workloadFactor: 1
             }
           ]
         },

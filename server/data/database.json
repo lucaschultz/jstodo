@@ -10,13 +10,13 @@
               "name": "Putzen",
               "done": false,
               "deadline": "2020-06-26",
-              "workloadFactor": "2"
+              "workloadFactor": 2
             },
             {
               "name": "Kochen",
               "done": false,
               "deadline": "",
-              "workloadFactor": "1"
+              "workloadFactor": 1
             }
           ]
         },
@@ -27,12 +27,8 @@
       ]
     },
     {
-      "user": "Lisa",
+      "user": "Luca",
       "lists": []
     },
-    {
-      "user": "Lisa",
-      "lists": []
-    }
   ]
 }
