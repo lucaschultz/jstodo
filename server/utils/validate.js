@@ -1,4 +1,4 @@
-const InvalidObjectError = require("./errors/object.js");
+const InvalidObjectError = require("../errors/object.js");
 
 class Validate {
 
