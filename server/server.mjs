@@ -1,5 +1,6 @@
 // Importiere Express.js und das Hilfspaket
 import express from 'express';
+import cors from 'cors';
 
 // Ich hoffe body-parser zählt NICHT als 
 // "weiteres externes Modul". Ich war zu faul 
@@ -24,6 +25,7 @@ const port = 3000;
 
 // Konfiguriere die Express Instanz um das Hilfspaket
 // body-parser zu benutzen.
+// app.use(cors);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
