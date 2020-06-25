@@ -1,6 +1,6 @@
 const InvalidObjectError = require("./errors/object.js");
 
-class Validator {
+class Validate {
 
     // Validiere ein item Object gemäß den Vorgaben
     static ITEM (obj) {
@@ -131,4 +131,4 @@ class Validator {
     }
 }
 
-module.exports = Validator;
+module.exports = Validate;
