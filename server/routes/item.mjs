@@ -1,24 +1,21 @@
 // Utility imports
-const Database = require("../database.js");
-const logger = require("../utils/logger.js");
-const ResponeJSON = require("../utils/response.js");
-const Validate = require("../utils/validate.js");
+import ResponeJSON from '../utils/response.mjs';
+import Validate from '../utils/validate.mjs';
 
 // Costom Error Imports
-const MissingError = require("../errors/missing.js");
-const InternalError = require("../errors/internal.js");
-const DuplicateError = require("../errors/duplicate.js");
-const InvalidObjectError = require("../errors/object.js");
+import MissingError from '../errors/missing.mjs';
+import InternalError from '../errors/internal.mjs';
+import DuplicateError from '../errors/duplicate.mjs';
+import InvalidObjectError from '../errors/object.mjs';
 
 
-
-const itemRoutes = (app, fs) => {
+const itemRoutes = (app, database, logger) => {
 
   app.all(/api\/item\/.*/, function (req, res, next) {
     Validate.ITEM(req.body)
       .then(() => next())
       .catch(err => {
-        logger(err.stack || err.toString());
+        logger.log(err.stack || err.toString());
         if (err instanceof InvalidObjectError) {
           next(err);
         } else {
@@ -28,16 +25,16 @@ const itemRoutes = (app, fs) => {
   })
 
   app.post('/api/item/:username/:listname', (req, res, next) => {
-    Database.load()
+    database.load()
       .then(() => {
         const userName = req.params['username'];
         const listName = req.params['listname'];
         const item = req.body;
-        Database.addItem(userName, listName, item)
+        database.addItem(userName, listName, item)
           .then(() => res.send(ResponeJSON
             .SUCCESS('Item Added', `Successfully added item '${item.name}' to list '${listName}' of user '${userName}'`)))
           .catch(err => {
-            logger(err.stack || err.toString());
+            logger.log(err.stack || err.toString());
             if (err instanceof MissingError || err instanceof DuplicateError) {
               next(err);
             } else {
@@ -46,23 +43,23 @@ const itemRoutes = (app, fs) => {
           })
       })
       .catch(err => {
-        logger(err.stack || err.toString());
-        next(new InternalError('Error loading Database'));
+        logger.log(err.stack || err.toString());
+        next(new InternalError('Error loading database'));
       });
   });
 
   app.put('/api/item/:username/:listname/:itemname', (req, res, next) => {
-    Database.load()
+    database.load()
       .then(() => {
         const userName = req.params['username'];
         const listName = req.params['listname'];
         const itemName = req.params['itemname'];
         const item = req.body;
-        Database.updateItem(userName, listName, itemName, item)
+        database.updateItem(userName, listName, itemName, item)
           .then(() => res.send(ResponeJSON
             .SUCCESS('Item Updated', `Successfully updated item '${item.name}' in list '${listName}' of user '${userName}'`)))
           .catch(err => {
-            logger(err.stack || err.toString());
+            logger.log(err.stack || err.toString());
             if (err instanceof MissingError || err instanceof DuplicateError) {
               next(err);
             } else {
@@ -71,22 +68,22 @@ const itemRoutes = (app, fs) => {
           })
       })
       .catch(err => {
-        logger(err.stack || err.toString());
+        logger.log(err.stack || err.toString());
         next(new InternalError('Error loading database'));    
       });
   });
 
   app.delete('/api/item/:username/:listname/:itemname', (req, res, next) => {
-    Database.load()
+    database.load()
       .then(() => {
         const userName = req.params['username'];
         const listName = req.params['listname'];
         const itemName = req.params['itemname'];
-        Database.deleteItem(userName, listName, itemName)
+        database.deleteItem(userName, listName, itemName)
           .then(() => res.send(ResponeJSON
             .SUCCESS('Item Deleted', `Successfully deleted item '${itemName}' in list '${listName}' of user '${userName}'`)))
           .catch(err => {
-            logger(err.stack || err.toString());
+            logger.log(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
@@ -95,10 +92,10 @@ const itemRoutes = (app, fs) => {
           });
       })
       .catch(err => {
-        logger(err.stack || err.toString());
+        logger.log(err.stack || err.toString());
         next(new InternalError('Error loading database'));    
       });
   });
 };
 
-module.exports = itemRoutes;
+export default itemRoutes;

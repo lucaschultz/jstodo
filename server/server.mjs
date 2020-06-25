@@ -1,5 +1,5 @@
 // Importiere Express.js und das Hilfspaket
-const express = require("express");
+import express from 'express';
 
 // Ich hoffe body-parser zählt NICHT als 
 // "weiteres externes Modul". Ich war zu faul 
@@ -8,17 +8,15 @@ const express = require("express");
 // der vorgegebenen package-lock.json und zum 
 // anderen Teil des express.js projects ist. Siehe:
 // https://github.com/expressjs/body-parser
-const bodyParser = require("body-parser");
-
-// Importiere die Node.js File System Library für 
-// das lesen und schreiben der JSON Datenbank.
-// Der Import erfolgt hier zentral für alle Routen!
-const fs = require("fs");
+import bodyParser from 'body-parser';
 
 // Eigene imports
-const logger = require("./utils/logger.js");
-const cleanup = require("./utils/cleanup.js");
-const errorHandler = require("./utils/errorHandler.js");
+import Logger from './utils/logger.mjs';
+const logger = new Logger();
+import JSONDatabase from './database.mjs';
+const database = new JSONDatabase;
+import cleanup from './utils/cleanup.mjs';
+import errorHandler from './utils/errorHandler.mjs';
 
 // Initialisiere Express instance
 const app = express();
@@ -33,7 +31,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/favicon.ico', (req, res) => res.status(204));
 
 // In der routes.mjs Datei werden die routen definiert 
-const routes = require("./routes/routes.js")(app, fs);
+import routesCreator from './routes/routes.mjs';
+const routes = routesCreator(app, database, logger);
 
 // Error Handler um mit einem JSON Objekt zu antworten
 app.use(errorHandler);
@@ -43,5 +42,5 @@ cleanup(logger);
 
 // Starte den Server auf Port 
 const server = app.listen(port, () => {
-  logger(`Starting server, listening on port ${port} ...`);
+  logger.log(`Starting server, listening on port ${port} ...`);
 });

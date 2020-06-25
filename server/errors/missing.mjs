@@ -1,4 +1,4 @@
-const ExtendableError = require('./extendable.js');
+import ExtendableError from './extendable.mjs';
 
 class MissingError extends ExtendableError {
     constructor(message, status = 404) {
@@ -6,4 +6,4 @@ class MissingError extends ExtendableError {
     }
 }
 
-module.exports = MissingError;
+export default MissingError;

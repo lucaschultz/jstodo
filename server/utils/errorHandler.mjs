@@ -1,4 +1,4 @@
-const ResponseJSON = require('./response.js');
+import ResponseJSON from './response.mjs';
 
 // Einfacher custom error handler für express  
 function handler (err, req, res, next) {
@@ -13,4 +13,4 @@ function handler (err, req, res, next) {
   res.send(ResponseJSON.ERROR(err.name, err.message));
 }
 
-module.exports = handler;
+export default handler;

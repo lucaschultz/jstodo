@@ -1,7 +1,8 @@
-const fs = require("fs").promises;
-const logger = require("./utils/logger.js");
-const MissingError = require("./errors/missing.js");
-const DuplicateError = require("./errors/duplicate.js");
+import baseFs from 'fs';
+const fs = baseFs.promises;
+
+import MissingError from './errors/missing.mjs';
+import DuplicateError from './errors/duplicate.mjs';
 
 
 // Der Pfad zur Datenbank/JSON Datei
@@ -285,5 +286,4 @@ class JSONDatabase {
   }
 }
 
-
-module.exports = new JSONDatabase();
+export default JSONDatabase;

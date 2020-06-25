@@ -1,4 +1,4 @@
-const ExtendableError = require('./extendable.js');
+import ExtendableError from './extendable.mjs';
 
 class InternalError extends ExtendableError {
     constructor(message, status = 500) {
@@ -6,4 +6,4 @@ class InternalError extends ExtendableError {
     }
 }
 
-module.exports = InternalError;
+export default InternalError;

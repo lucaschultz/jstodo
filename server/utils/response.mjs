@@ -25,4 +25,4 @@ class ResponseJSON {
 
 }
 
-module.exports = ResponseJSON;
+export default ResponseJSON;

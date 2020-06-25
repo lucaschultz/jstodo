@@ -1,4 +1,4 @@
-const ExtendableError = require('./extendable.js');
+import ExtendableError from './extendable.mjs';
 
 class InvalidObjectError extends ExtendableError {
     constructor(message, status = 400) {
@@ -6,4 +6,4 @@ class InvalidObjectError extends ExtendableError {
     }
 }
 
-module.exports = InvalidObjectError;
+export default InvalidObjectError;

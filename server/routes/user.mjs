@@ -1,23 +1,21 @@
 // Utility imports
-const Database = require("../database.js");
-const logger = require("../utils/logger.js");
-const ResponeJSON = require("../utils/response.js");
-const Validate = require("../utils/validate.js");
+import ResponseJSON from '../utils/response.mjs';
+import Validate from '../utils/validate.mjs';
 
 // Costom Error Imports
-const MissingError = require("../errors/missing.js");
-const InternalError = require("../errors/internal.js");
-const DuplicateError = require("../errors/duplicate.js");
-const InvalidObjectError = require("../errors/object.js");
+import MissingError from '../errors/missing.mjs';
+import InternalError from '../errors/internal.mjs';
+import DuplicateError from '../errors/duplicate.mjs';
+import InvalidObjectError from '../errors/object.mjs';
 
 
-const userRoutes = (app, fs) => {
+const userRoutes = (app, database, logger) => {
 
   app.all(/api\/user\/.*/, function (req, res, next) {
     Validate.USER(req.body)
       .then(() => next())
       .catch(err => {
-        logger(err.stack || err.toString());
+        logger.log(err.stack || err.toString());
         if (err instanceof InvalidObjectError) {
           next(err);
         } else {
@@ -27,23 +25,23 @@ const userRoutes = (app, fs) => {
   })
 
   app.get('/api/user', (req, res, next) => {
-    Database.load()
-      .then(() => res.send(JSON.stringify(Database.users)))
+    database.load()
+      .then(() => res.send(JSON.stringify(database.users)))
       .catch(err => {
-        logger(err.stack || err.toString());
-        next(new InternalError('Database error'));
+        logger.log(err.stack || err.toString());
+        next(new InternalError('database error'));
       })
   });
 
   app.post('/api/user', (req, res, next) => {
-    Database.load()
+    database.load()
       .then(() => {
         const userName = req.body.user;
-        Database.addUser(userName)
-          .then(() => res.send(ResponeJSON
+        database.addUser(userName)
+          .then(() => res.send(ResponseJSON
             .SUCCESS('User Added', `Successfully added user with ID '${userName}' to the database`)))
           .catch(err => {
-            logger(err.stack || err.toString());
+            logger.log(err.stack || err.toString());
             if (err instanceof DuplicateError) {
               next(err);
             } else {
@@ -52,20 +50,20 @@ const userRoutes = (app, fs) => {
           })
       })
       .catch(err => {
-        logger(err.stack || err.toString());
-        next(new InternalError('Error loading Database'));
+        logger.log(err.stack || err.toString());
+        next(new InternalError('Error loading database'));
       });
   });
 
   app.delete('/api/user/:name', (req, res, next) => {
-    Database.load()
+    database.load()
       .then(() => {
         const userName = req.params['name'];
-        Database.deleteUser(userName)
-          .then(() => res.send(ResponeJSON
+        database.deleteUser(userName)
+          .then(() => res.send(ResponseJSON
             .SUCCESS('User Deleted', `Successfully deleted user with ID '${userName}' from the database`)))
           .catch(err => {
-            logger(err.stack || err.toString());
+            logger.log(err.stack || err.toString());
             if (err instanceof MissingError) {
               next(err);
             } else {
@@ -74,21 +72,21 @@ const userRoutes = (app, fs) => {
           });
       })
       .catch(err => {
-        logger(err.stack || err.toString());
+        logger.log(err.stack || err.toString());
         next(new InternalError('Error loading database'));    
       });
   });
 
   app.patch('/api/user/:name', (req, res, next) => {
-    Database.load()
+    database.load()
       .then(() => {
         const oldUserName = req.params['name'];
         const newUserName = req.body.user;
-        Database.renameUser(oldUserName, newUserName)
-          .then(() => res.send(ResponeJSON
+        database.renameUser(oldUserName, newUserName)
+          .then(() => res.send(ResponseJSON
             .SUCCESS('User Renamed', `Successfully renamed user with ID '${oldUserName}' in the database`)))
           .catch(err => {
-            logger(err.stack || err.toString());
+            logger.log(err.stack || err.toString());
             if (err instanceof MissingError || err instanceof DuplicateError) {
               next(err);
             } else {
@@ -97,11 +95,11 @@ const userRoutes = (app, fs) => {
           })
       })
       .catch(err => {
-        logger(err.stack || err.toString());
+        logger.log(err.stack || err.toString());
         next(new InternalError('Error loading database'));    
       });
   });
 
 };
 
-module.exports = userRoutes;
+export default userRoutes;

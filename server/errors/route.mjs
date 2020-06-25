@@ -1,4 +1,4 @@
-const ExtendableError = require('./extendable.js');
+import ExtendableError from './extendable.mjs';
 
 class InvalidRouteError extends ExtendableError {
     constructor(message, status = 501) {
@@ -6,4 +6,4 @@ class InvalidRouteError extends ExtendableError {
     }
 }
 
-module.exports = InvalidRouteError;
+export default InvalidRouteError;

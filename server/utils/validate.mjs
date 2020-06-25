@@ -1,4 +1,4 @@
-const InvalidObjectError = require("../errors/object.js");
+import InvalidObjectError from '../errors/object.mjs';
 
 function isEmptyObject (obj) {
     if (Object.keys(obj).length === 0 && obj.constructor === Object) {
@@ -157,4 +157,4 @@ class Validate {
     }
 }
 
-module.exports = Validate;
+export default Validate;

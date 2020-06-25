@@ -1,4 +1,4 @@
-const ExtendableError = require('./extendable.js');
+import ExtendableError from './extendable.mjs';
 
 class DuplicateObjectError extends ExtendableError {
     constructor(message, status = 409) {
@@ -6,4 +6,4 @@ class DuplicateObjectError extends ExtendableError {
     }
 }
 
-module.exports = DuplicateObjectError;
+export default DuplicateObjectError;
