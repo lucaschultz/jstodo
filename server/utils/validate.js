@@ -4,6 +4,12 @@ class Validate {
 
     // Validiere ein item Object gemäß den Vorgaben
     static ITEM (obj) {
+
+        // Valide Requests können auch empty objects (= kein Body) enthalten 
+        if (isEmptyObject(obj)) {
+            return
+        }
+
         let keyAnmount;
 
         // Teste ob die Anzahl der Properties festgestellt werden kann
@@ -42,6 +48,12 @@ class Validate {
 
     // Validiere ein item list Object gemäß den Vorgaben
     static LIST (obj, barebones = true) {
+
+        // Valide Requests können auch empty objects (= kein Body) enthalten 
+        if (isEmptyObject(obj)) {
+            return
+        }
+
         let keyAnmount;
         const expectedkeyAnmount = barebones ? 1 : 2;
         
@@ -87,6 +99,12 @@ class Validate {
 
     // Validiere ein user Object gemäß den Vorgaben
     static USER (obj, barebones = true) {
+
+        // Valide Requests können auch empty objects (= kein Body) enthalten 
+        if (isEmptyObject(obj)) {
+            return
+        }
+
         let keyAnmount;
         const expectedkeyAnmount = barebones ? 1 : 2;
         
