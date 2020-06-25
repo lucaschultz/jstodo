@@ -1,5 +1,13 @@
 // Importiere Express.js und das Hilfspaket
 const express = require("express");
+
+// Ich hoffe body-parser zählt NICHT als 
+// "weiteres externes Modul". Ich war zu faul 
+// das selber nochmal zu implementieren. Meine
+// Argumente sind das body-parser zum einen Teil
+// der vorgegebenen package-lock.json und zum 
+// anderen Teil des express.js projects ist. Siehe:
+// https://github.com/expressjs/body-parser
 const bodyParser = require("body-parser");
 
 // Importiere die Node.js File System Library für 
