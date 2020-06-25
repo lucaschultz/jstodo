@@ -3,7 +3,7 @@ const InvalidObjectError = require("../errors/object.js");
 class Validate {
 
     // Validiere ein item Object gemäß den Vorgaben
-    static ITEM (obj) {
+    static async ITEM (obj) {
 
         // Valide Requests können auch empty objects (= kein Body) enthalten 
         if (isEmptyObject(obj)) {
@@ -47,7 +47,7 @@ class Validate {
     }
 
     // Validiere ein item list Object gemäß den Vorgaben
-    static LIST (obj, barebones = true) {
+    static async LIST (obj, barebones = true) {
 
         // Valide Requests können auch empty objects (= kein Body) enthalten 
         if (isEmptyObject(obj)) {
@@ -98,7 +98,7 @@ class Validate {
     }
 
     // Validiere ein user Object gemäß den Vorgaben
-    static USER (obj, barebones = true) {
+    static async USER (obj, barebones = true) {
 
         // Valide Requests können auch empty objects (= kein Body) enthalten 
         if (isEmptyObject(obj)) {
