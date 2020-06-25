@@ -29,6 +29,9 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Die API hat kein favicon ...
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 // In der routes.mjs Datei werden die routen definiert 
 const routes = require("./routes/routes.js")(app, fs);
 
