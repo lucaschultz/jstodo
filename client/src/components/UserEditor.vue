@@ -2,7 +2,7 @@
   <div :class="{ current: isCurrent, expanded: isExpanded }" class="user-tile user-editor">
     <AddButton @click="newUser"></AddButton>
     <input type="text" v-model="name" placeholder="Name">
-    <ConfirmButton @click="emitUser"></ConfirmButton>
+    <ConfirmButton @click="uploadUser"></ConfirmButton>
     <CancelButton @click="cancelUser"></CancelButton>
   </div>
 </template>
@@ -11,6 +11,7 @@
 import ConfirmButton from './ConfirmButton.vue';
 import CancelButton from './CancelButton.vue';
 import AddButton from './AddButton.vue';
+import api from '../api.mjs';
 
 export default {
   name: 'TodoList',
@@ -20,6 +21,7 @@ export default {
   },
   data: function () {
     return {
+      new: false,
       name: '',
       id: null,
       lists: [],
@@ -36,21 +38,32 @@ export default {
     },
     newUser: function () {
       this.id = this.generateID();
+      this.new = true;
     },
-    cancelUser: function () {
+    cancelUser: async function () {
+      if (!this.new) {
+        const response = await api.user.DELETE(this.user.user);
+        this.$emit('response', response);
+      }
+      this.new = false;
       this.id = null;
       this.name = '';
       this.lists = [];
-      this.$emit('cancelled');
     },
-    emitUser: function () {
-      this.$emit('user', {
-        user: this.name,
-        id: this.id,
-        lists: this.lists,
-      });
-      this.cancelUser();
+    uploadUser: async function () {
+      let response;
+      if (this.new) {
+        response = await api.user.ADD(this.name);
+      } else {
+        response = await api.user.RENAME(this.user.user, this.name);
+      }
+      this.$emit('response', response);
+      this.new = false;
+      this.id = null;
+      this.name = '';
+      this.lists = [];
     }
+
   },
   watch: {
     user: {
@@ -65,7 +78,7 @@ export default {
   components: {
     ConfirmButton,
     CancelButton,
-    AddButton
+    AddButton,
   }
 };
 </script>

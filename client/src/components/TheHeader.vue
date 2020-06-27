@@ -3,7 +3,7 @@
     <div id="header-content-wrapper">
       <div class="users-wrapper">
         <UserTile v-for="user in users" :key="user.id" :userID="user.id" :userName="user.user" :isCurrent="isCurrent(user)" @switch="$emit('switch', user.id)" @edit="setEditUser"></UserTile>
-        <UserEditor @user="addUser" @cancelled="cancelledEdit" :user="editUser"></UserEditor>
+        <UserEditor @response="emitResponse" :user="editUser"></UserEditor>
       </div>
       <h1>JS Todo</h1>
     </div>
@@ -30,29 +30,11 @@ export default {
     isCurrent: function (user) {
       return user.id === this.currentUser.id;
     },
-    addUser: function (user) {
-      const index = this.users.findIndex(u => user.id === u.id);
-      if (index === -1) {
-        this.users.push(user);
-      } else {
-        Object.assign(this.users[index], user);
-      }
-      this.editUser = null;
-      this.emitUserList();
-    },
-    cancelledEdit: function () {
-      this.editUser = null;
-      this.emitUserList();
-    },
     setEditUser: function (id) {
       this.editUser = this.users.find(u => u.id === id);
-      this.removeUser(id);
     },
-    removeUser: function (id) {
-      this.users = this.users.filter(u => u.id !== id);
-    },
-    emitUserList: function () {
-      this.$emit('user-list', this.users);
+    emitResponse: function (response) {
+      this.$emit('response', response);
     }
   },
   watch: {

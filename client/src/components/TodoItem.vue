@@ -1,7 +1,7 @@
 <template>
     <ul>
         <li class="todo-item">
-          <input type="checkbox" :id="extended" v-model="done">
+          <input type="checkbox" :id="extended" v-model="isDone">
           <div class="item-name">{{ name }}</div>
           <EditButton @click="editItem"></EditButton>
           <div class="break"></div>
@@ -12,28 +12,31 @@
 
 <script>
 import EditButton from './EditButton.vue';
+import api from '../api.mjs';
 
 export default {
   name: 'TodoList',
   props: {
-    item: Object
+    item: Object,
+    username: String,
+    listname: String
   },
   data: function () {
     return {
       name: this.item.name,
       done: this.item.done,
-      due: this.item.due,
+      deadline: this.item.deadline,
       id: this.item.id,
-      cost: this.item.cost,
+      workloadFactor: this.item.workloadFactor,
       extended: this.item.id + this.generateID(),
     };
   },
   computed: {
     dueIn: function () {
-      if (!this.due) {
+      if (!this.deadline) {
         return null;
       } else {
-        const matches = this.due.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/);
+        const matches = this.deadline.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/);
         let dateStr;
         if (matches) {
           dateStr = matches[0];
@@ -45,6 +48,26 @@ export default {
         return this.timeDeltaConverter(timeDelta);
       }
     },
+    localItem: function () {
+      return {
+        done: this.done,
+        name: this.name,
+        workloadFactor: this.workloadFactor,
+        deadline: this.deadline
+      };
+    },
+    isDone: {
+      set: function (val) {
+        this.done = val;
+        api.item.UPDATE(this.username, this.listname, this.item.name, this.localItem)
+          .then(response => {
+            this.$emit('response', response);
+          });
+      },
+      get: function () {
+        return this.done;
+      }
+    }
   },
   methods: {
     generateID () {
@@ -54,8 +77,8 @@ export default {
       this.$emit('updated-item', {
         name: this.name,
         done: this.done,
-        due: this.due,
-        cost: this.cost,
+        deadline: this.deadline,
+        workloadFactor: this.workloadFactor,
         id: this.id
       });
     },
@@ -63,8 +86,8 @@ export default {
       this.$emit('edit-item', {
         name: this.name,
         done: this.done,
-        due: this.due,
-        cost: this.cost,
+        deadline: this.deadline,
+        workloadFactor: this.workloadFactor,
         id: this.id
       });
     },
@@ -101,9 +124,9 @@ export default {
       handler (newVal) {
         this.name = newVal.name;
         this.done = newVal.done;
-        this.due = newVal.due;
+        this.deadline = newVal.deadline;
         this.id = newVal.id;
-        this.cost = newVal.cost;
+        this.workloadFactor = newVal.workloadFactor;
         this.extended = newVal.id + this.generateID();
       }
     }

@@ -8,9 +8,9 @@
         <ProgressBar :progress="listProgress"></ProgressBar>
       </div>
       <ul class="item-list">
-        <TodoItem v-for="item in items" v-bind:item="item" v-bind:key="item.id" @updated-item="updateItems" @edit-item="setEditItem"></TodoItem>
+        <TodoItem v-for="item in items" :listname="list.name" :username="username" :item="item" :key="item.name" @edit-item="setEditItem" @response="emitResponse"></TodoItem>
       </ul>
-      <ItemEditor :item="editItem" @updated-item="updateItems"></ItemEditor>
+      <ItemEditor :listname="list.name" :username="username" :item="editItem" @response="emitResponse"></ItemEditor>
     </div>
   </div>
 </template>
@@ -24,7 +24,8 @@ import ProgressBar from './ProgressBar.vue';
 export default {
   name: 'TodoList',
   props: {
-    list: Object
+    list: Object,
+    username: String
   },
   data: function () {
     return {
@@ -49,35 +50,20 @@ export default {
       let openCost = 0;
       let doneCost = 0;
       this.openItems.forEach(item => {
-        openCost += this.isNumber(item.cost) ? parseFloat(item.cost) : 0;
+        openCost += this.isNumber(item.workloadFactor) ? parseFloat(item.workloadFactor) : 0;
       });
       this.doneItems.forEach(item => {
-        doneCost += this.isNumber(item.cost) ? parseFloat(item.cost) : 0;
+        doneCost += this.isNumber(item.workloadFactor) ? parseFloat(item.workloadFactor) : 0;
       });
       const totalCost = openCost + doneCost;
-      console.log(doneCost);
-      console.log(openCost);
       return totalCost !== 0 ? Math.round(doneCost / (totalCost / 100)) : 0;
     }
   },
   methods: {
     isNumber: function (n) {
-      return !isNaN(parseFloat(n)) && !isNaN(n - 0)
-    },
-    updateItems: function (item) {
-      const index = this.items.findIndex(i => item.id === i.id);
-      if (index === -1) {
-        this.items.push(item);
-      } else {
-        Object.assign(this.items[index], item);
-      }
-      this.editItem = null;
-    },
-    removeItem: function (item) {
-      this.items = this.items.filter(i => item.id !== i.id);
+      return !isNaN(parseFloat(n)) && !isNaN(n - 0);
     },
     setEditItem: function (item) {
-      this.removeItem(item);
       this.editItem = item;
     },
     editList () {
@@ -87,18 +73,11 @@ export default {
         id: this.id
       });
     },
-    updateList: function () {
-      this.$emit('update-list', {
-        items: this.items,
-        name: this.name,
-        id: this.id
-      });
+    emitResponse: function (response) {
+      this.$emit('response', response);
     }
   },
   watch: {
-    items: function () {
-      this.updateList();
-    },
     list: {
       deep: true,
       handler (newVal) {

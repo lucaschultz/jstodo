@@ -1,7 +1,7 @@
 <template>
   <main id="main-content-wrapper">
-    <TodoList v-for="list in lists" v-bind:key="list.id" v-bind:list="list" @update-list="updateLists" @edit-list="setEditList"></TodoList>
-    <ListEditor :list="editList" @updated-list="updateLists"></ListEditor>
+    <TodoList v-for="list in lists" :key="list.id" :list="list" :username="user.user" @edit-list="setEditList" @response="emitResponse"></TodoList>
+    <ListEditor :username="name" :list="editList" @response="emitResponse"></ListEditor>
   </main>
 </template>
 
@@ -23,34 +23,14 @@ export default {
     };
   },
   methods: {
-    updateLists: function (list) {
-      const index = this.lists.findIndex(l => list.id === l.id);
-      if (index === -1) {
-        this.lists.push(list);
-      } else {
-        Object.assign(this.lists[index], list);
-      }
-      this.editList = null;
-    },
-    emitUser: function () {
-      this.$emit('updated-user', {
-        user: this.name,
-        id: this.id,
-        lists: this.lists
-      });
-    },
-    removeList: function (list) {
-      this.lists = this.lists.filter(l => list.id !== l.id);
-    },
     setEditList: function (list) {
-      this.removeList(list);
       this.editList = list;
     },
+    emitResponse: function (response) {
+      this.$emit('response', response);
+    }
   },
   watch: {
-    lists: function () {
-      this.emitUser();
-    },
     user: {
       deep: true,
       handler (newVal) {

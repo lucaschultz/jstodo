@@ -4,8 +4,8 @@
       <input type="text" class="new-list-name" placeholder="Listen Titel" v-model="name">
       <TodoList :list="localList" v-disable-all></TodoList>
       <div class="button-wrapper-list">
-        <ConfirmButton @click="emitList"></ConfirmButton>
-        <CancelButton @click="cancelEdit"></CancelButton>
+        <ConfirmButton @click="uploadList"></ConfirmButton>
+        <CancelButton @click="cancelList"></CancelButton>
       </div>
     </div>
     <AddButton @click="newList"></AddButton>
@@ -13,19 +13,21 @@
 </template>
 
 <script>
-// import NewListButton from './NewListButton.vue';
 import TodoList from './TodoList.vue';
 import ConfirmButton from './ConfirmButton.vue';
 import CancelButton from './CancelButton.vue';
 import AddButton from './AddButton.vue';
+import api from '../api.mjs';
 
 export default {
   name: 'ListEditor',
   props: {
+    username: String,
     list: Object
   },
   data: function () {
     return {
+      new: false,
       name: '',
       id: null,
       items: [],
@@ -48,16 +50,31 @@ export default {
       return '_' + Math.random().toString(36).substr(2, 9);
     },
     newList: function () {
+      this.new = true;
       this.id = this.generateID();
     },
-    cancelEdit: function () {
+    cancelList: async function () {
+      if (!this.new) {
+        const response = await api.list.DELETE(this.username, this.list.name);
+        this.$emit('response', response);
+      }
       this.id = null;
+      this.new = false;
       this.name = '';
       this.items = [];
     },
-    emitList: function () {
-      this.$emit('updated-list', this.localList);
-      this.cancelEdit();
+    uploadList: async function () {
+      let response;
+      if (this.new) {
+        response = await api.list.ADD(this.username, this.name);
+      } else {
+        response = await api.list.RENAME(this.username, this.list.name, this.name);
+      }
+      this.$emit('response', response);
+      this.id = null;
+      this.new = false;
+      this.items = [];
+      this.name = '';
     }
   },
   watch: {
