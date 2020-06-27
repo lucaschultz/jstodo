@@ -9,7 +9,7 @@
             {
               "name": "Putzen",
               "done": false,
-              "deadline": "2020-06-26",
+              "deadline": "2020-07-08",
               "workloadFactor": 2
             },
             {
@@ -40,22 +40,6 @@
       ]
     },
     {
-      "user": "Luca",
-      "lists": [
-        {
-          "name": "Studium",
-          "items": [
-            {
-              "name": "Für XML lernen",
-              "done": false,
-              "workloadFactor": 0,
-              "deadline": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
       "user": "Max",
       "lists": [
         {
@@ -65,6 +49,32 @@
               "name": "Für XML lernen",
               "done": false,
               "workloadFactor": 0,
+              "deadline": ""
+            }
+          ]
+        },
+        {
+          "name": "Neue Liste",
+          "items": []
+        }
+      ]
+    },
+    {
+      "user": "Luca",
+      "lists": [
+        {
+          "name": "Erste Liste",
+          "items": [
+            {
+              "name": "Projektvorstellung",
+              "done": false,
+              "workloadFactor": 2,
+              "deadline": ""
+            },
+            {
+              "name": "Schlaf nachholen",
+              "done": true,
+              "workloadFactor": 1,
               "deadline": ""
             }
           ]
