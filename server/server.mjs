@@ -23,9 +23,11 @@ import errorHandler from './utils/errorHandler.mjs';
 const app = express();
 const port = 3000;
 
+app.use(express.static('../client/dist'));
+
 // Konfiguriere die Express Instanz um das Hilfspaket
 // body-parser zu benutzen.
-// app.use(cors);
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
