@@ -28,7 +28,35 @@
     },
     {
       "user": "Luca",
-      "lists": []
+      "lists": [
+        {
+          "name": "Studium",
+          "items": [
+            {
+              "name": "Für XML lernen",
+              "done": false,
+              "workloadFactor": 0,
+              "deadline": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "user": "Max",
+      "lists": [
+        {
+          "name": "Uni",
+          "items": [
+            {
+              "name": "Für XML lernen",
+              "done": false,
+              "workloadFactor": 0,
+              "deadline": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
