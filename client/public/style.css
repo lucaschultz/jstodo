@@ -230,6 +230,63 @@ html {
   background-color: var(--bg-main);
 }
 
+/* Error Dialogue */
+
+.overlay {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, .7);
+  top: 0;
+  left: 0;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-dialogue {
+  background-color: var(--bg-accent);
+  width: 80vw;
+  max-width: 350px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.error-dialogue h4 {
+  font-size: 1.75em;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  background-color: var(--tertiary-accent);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px; 
+}
+
+.error-message h5 {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+}
+
+.error-message {
+  
+}
+
+.error-dialogue .simple-button {
+  opacity: 1;
+  width: 80px;
+  height: 30px;
+  margin: 0;
+  display: flex;
+}
+
 /* Header */
 
 
@@ -405,13 +462,13 @@ header h1 {
   background: var(--bg-accent);
   border-radius: 20px;
   padding: 20px;
-  min-height: 250px;
 }
 
 .todo-list-content {
   height: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 210px;
 }
 
 .list-header-wrapper {
@@ -617,8 +674,13 @@ input.new-todo-cost:focus {
   color: var(--text-secondary);
 }
 
-.new-todo-cost {
-  width: 50px;
+input.new-todo-cost {
+  width: 30px;
+  margin-left: 15px !important;
+}
+
+.new-todo-due {
+  max-width: 100px;
 }
 
 .new-todo-cost:placeholder {
@@ -706,7 +768,12 @@ form.expanded .confirm-button:hover {
   min-height: 250px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   transition: background-color .2s ease;
+}
+
+.list-editor-wrapper .todo-list-content {
+  min-height: unset;
 }
 
 .list-editor-wrapper:hover {
