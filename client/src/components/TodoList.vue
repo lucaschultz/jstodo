@@ -50,10 +50,10 @@ export default {
       let openCost = 0;
       let doneCost = 0;
       this.openItems.forEach(item => {
-        openCost += this.isNumber(item.workloadFactor) ? parseFloat(item.workloadFactor) : 0;
+        openCost += this.isNumber(item.workloadFactor) ? parseFloat(item.workloadFactor) : 1;
       });
       this.doneItems.forEach(item => {
-        doneCost += this.isNumber(item.workloadFactor) ? parseFloat(item.workloadFactor) : 0;
+        doneCost += this.isNumber(item.workloadFactor) ? parseFloat(item.workloadFactor) : 1;
       });
       const totalCost = openCost + doneCost;
       return totalCost !== 0 ? Math.round(doneCost / (totalCost / 100)) : 0;
