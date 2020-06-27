@@ -9,9 +9,9 @@ import DuplicateError from '../errors/duplicate.mjs';
 import InvalidObjectError from '../errors/object.mjs';
 
 
-const listRoutes = (app, database, logger) => {
+function listRoutes (app, database, logger) {
 
-  app.all(/api\/list\/.*/, function (req, res, next) {
+  app.all(/api\/list\/.*/, (req, res, next) => {
     Validate.LIST(req.body)
       .then(() => next())
       .catch(err => {
@@ -22,7 +22,7 @@ const listRoutes = (app, database, logger) => {
           next(new InternalError(`Internal error validating request body against list requirements`));
         }
       });
-  })
+  });
 
   app.get('/api/list/:username', (req, res, next) => {
     database.load()
@@ -37,12 +37,12 @@ const listRoutes = (app, database, logger) => {
             } else {
               next(new InternalError(`Internal getting lists of user with ID '${userName}'`));
             }            
-          })
+          });
       })
       .catch(err => {
         logger.log(err.stack || err.toString());
         next(new InternalError('database error'));
-      })
+      });
   });
 
   app.post('/api/list/:username', (req, res, next) => {
@@ -60,7 +60,7 @@ const listRoutes = (app, database, logger) => {
             } else {
               next(new InternalError(`Internal error adding list with ID '${listName}' of user '${userName}'`));
             }
-          })
+          });
       })
       .catch(err => {
         logger.log(err.stack || err.toString());
@@ -85,7 +85,7 @@ const listRoutes = (app, database, logger) => {
             } else {
               next(new InternalError(`Internal error renaming list with ID '${oldListName}' of user '${userName}'`));
             }
-          })
+          });
       })
       .catch(err => {
         logger.log(err.stack || err.toString());
@@ -115,6 +115,6 @@ const listRoutes = (app, database, logger) => {
         next(new InternalError('Error loading database'));    
       });
   });
-};
+}
 
 export default listRoutes;

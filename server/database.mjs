@@ -42,7 +42,7 @@ const databaseTemplate = {
       lists: []
     } 
   ]  
-}
+};
 
 function equalArraysByID (arr1, arr2, keyOfID) {
 
@@ -54,19 +54,19 @@ function equalArraysByID (arr1, arr2, keyOfID) {
     }
 
     // Compare Funktion zum sortieren nach der ID
-    const compare = (a, b) => {
+    function compare (a, b) {
         return a[keyOfID].localeCompare(b);
     }
 
     // Erstelle jweils ein Dublikat der Arrays
     // um die originale nicht zu verändern und
     // sortiere die Duplikate nach der ID
-    var arr1 = arr1.concat().sort(compare);
-    var arr2 = arr2.concat().sort(compare);
+    arr1 = arr1.concat().sort(compare);
+    arr2 = arr2.concat().sort(compare);
 
     // Vergleiche jeweils zwei Objekte in den Arrays 
     // Paarweise ob sie die selbe ID haben.
-    for (var i = 0; i < arr1.length; i++) {
+    for (let i = 0; i < arr1.length; i++) {
         if (arr1[i][keyOfID] !== arr2[i][keyOfID]) {
             return false;
         }
@@ -78,12 +78,12 @@ function equalArraysByID (arr1, arr2, keyOfID) {
 }
 
 function incrementName (string) {
-    re = /\(\d+\)/g
+    let re = /\(\d+\)/g;
     let match = string.match(re) || null;
     if (!match) {
         return string + ' (1)';
     } else {
-        match = match[0]
+        match = match[0];
         const incremented = `(${parseInt(match.slice(1, -1)) + 1})`;
         return string.replace(match, incremented);
     }
@@ -117,7 +117,7 @@ function renameIfUnique (arr, key, oldValue, newValue, type = "Item") {
 
 function pushIfUnique (arr, obj, key, type, rename = false) {
   // Teste ob ein Objekt mit dem selben Key existiert 
-  const exists = inArray(arr, obj, key)
+  const exists = inArray(arr, obj, key);
   // Wenn eines existiert ...
   if (exists) {
     // ... und nicht umbennant werden soll ...

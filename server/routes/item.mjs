@@ -9,9 +9,9 @@ import DuplicateError from '../errors/duplicate.mjs';
 import InvalidObjectError from '../errors/object.mjs';
 
 
-const itemRoutes = (app, database, logger) => {
+function itemRoutes (app, database, logger) {
 
-  app.all(/api\/item\/.*/, function (req, res, next) {
+  app.all(/api\/item\/.*/, (req, res, next) => {
     Validate.ITEM(req.body)
       .then(() => next())
       .catch(err => {
@@ -22,7 +22,7 @@ const itemRoutes = (app, database, logger) => {
           next(new InternalError(`Internal error validating request body against item requirements`));
         }
       });
-  })
+  });
 
   app.post('/api/item/:username/:listname', (req, res, next) => {
     database.load()
@@ -40,7 +40,7 @@ const itemRoutes = (app, database, logger) => {
             } else {
               next(new InternalError(`Internal error adding item '${item.name}' to list '${listName}' of user '${userName}'`));
             }
-          })
+          });
       })
       .catch(err => {
         logger.log(err.stack || err.toString());
@@ -65,7 +65,7 @@ const itemRoutes = (app, database, logger) => {
             } else {
               next(new InternalError(`Internal error updating item '${item.name}' in list '${listName}' of user '${userName}'`));
             }
-          })
+          });
       })
       .catch(err => {
         logger.log(err.stack || err.toString());
@@ -96,6 +96,6 @@ const itemRoutes = (app, database, logger) => {
         next(new InternalError('Error loading database'));    
       });
   });
-};
+}
 
 export default itemRoutes;

@@ -14,7 +14,7 @@
             },
             {
               "name": "Kochen",
-              "done": false,
+              "done": true,
               "deadline": "",
               "workloadFactor": 1
             }
@@ -22,7 +22,20 @@
         },
         {
           "name": "Leere Liste",
-          "items": []
+          "items": [
+            {
+              "name": "Test",
+              "done": true,
+              "workloadFactor": 0,
+              "deadline": ""
+            },
+            {
+              "name": "Noch ein Test",
+              "done": false,
+              "workloadFactor": 0,
+              "deadline": ""
+            }
+          ]
         }
       ]
     },

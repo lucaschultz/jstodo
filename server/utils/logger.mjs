@@ -1,9 +1,10 @@
-import fs from 'fs'
+import fs from 'fs';
 
-const defaultPath = './server.log'
+const defaultPath = './server.log';
 
-const logStream = (path) => fs.createWriteStream(path, 
-    { 'flags': 'a', 'encoding': 'utf8'});
+function logStream (path) {
+    return fs.createWriteStream(path, { 'flags': 'a', 'encoding': 'utf8'});
+}
 
 class Logger {
 

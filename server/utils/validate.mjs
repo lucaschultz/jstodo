@@ -15,7 +15,7 @@ class Validate {
 
         // Valide Requests können auch empty objects (= kein Body) enthalten 
         if (isEmptyObject(obj)) {
-            return
+            return;
         }
 
         let keyAnmount;
@@ -40,17 +40,17 @@ class Validate {
 
         // Teste ob die Property deadline definiert und ein string ist
         if (typeof obj.deadline !== "string") {
-            throw new InvalidObjectError(`Object isn't conform to an item, property 'deadline' should be a string but is ${typeof obj.deadline}`)
+            throw new InvalidObjectError(`Object isn't conform to an item, property 'deadline' should be a string but is ${typeof obj.deadline}`);
         }
         
         // Teste ob die Property workloadFactor definiert und eine number ist
         if (typeof obj.workloadFactor !== "number") {
-            throw new InvalidObjectError(`Object isn't conform to an item, property 'workloadFactor' should be a number but is ${typeof obj.workloadFactor}`)
+            throw new InvalidObjectError(`Object isn't conform to an item, property 'workloadFactor' should be a number but is ${typeof obj.workloadFactor}`);
         }
         
         // Teste ob die Property done definiert und ein boolean ist
         if (typeof obj.done !== "boolean") {
-            throw new InvalidObjectError(`Object isn't conform to an item, property 'done' should be a boolean but is ${typeof obj.done}`)
+            throw new InvalidObjectError(`Object isn't conform to an item, property 'done' should be a boolean but is ${typeof obj.done}`);
         }
     }
 
@@ -59,7 +59,7 @@ class Validate {
 
         // Valide Requests können auch empty objects (= kein Body) enthalten 
         if (isEmptyObject(obj)) {
-            return
+            return;
         }
 
         let keyAnmount;
@@ -110,7 +110,7 @@ class Validate {
 
         // Valide Requests können auch empty objects (= kein Body) enthalten 
         if (isEmptyObject(obj)) {
-            return
+            return;
         }
 
         let keyAnmount;

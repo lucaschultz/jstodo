@@ -4,7 +4,7 @@ import listRoutes from './list.mjs';
 import itemRoutes from './item.mjs';
 import invalidRoutes from './invalid.mjs';
 
-const appRoutes = (app, database, logger) => {
+function appRoutes (app, database, logger) {
   
   // Standardnachricht
   app.get("/api", (req, res) => {
@@ -22,7 +22,7 @@ const appRoutes = (app, database, logger) => {
   
   // Alle anderen Routen sind invalid
   invalidRoutes(app, database, logger);
-};
+}
 
 // Exportiere die Endpoints um sie in server.js
 // zu verwenden!

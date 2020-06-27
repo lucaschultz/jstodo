@@ -9,9 +9,9 @@ import DuplicateError from '../errors/duplicate.mjs';
 import InvalidObjectError from '../errors/object.mjs';
 
 
-const userRoutes = (app, database, logger) => {
+function userRoutes (app, database, logger) {
 
-  app.all(/api\/user\/.*/, function (req, res, next) {
+  app.all(/api\/user\/.*/, (req, res, next) => {
     Validate.USER(req.body)
       .then(() => next())
       .catch(err => {
@@ -22,7 +22,7 @@ const userRoutes = (app, database, logger) => {
           next(new InternalError(`Internal error validating request body against user requirements`));
         }
       });
-  })
+  });
 
   app.get('/api/user', (req, res, next) => {
     database.load()
@@ -30,7 +30,7 @@ const userRoutes = (app, database, logger) => {
       .catch(err => {
         logger.log(err.stack || err.toString());
         next(new InternalError('database error'));
-      })
+      });
   });
 
   app.post('/api/user', (req, res, next) => {
@@ -47,7 +47,7 @@ const userRoutes = (app, database, logger) => {
             } else {
               next(new InternalError(`Internal error adding User with ID '${userName}' to the database`));
             }
-          })
+          });
       })
       .catch(err => {
         logger.log(err.stack || err.toString());
@@ -92,7 +92,7 @@ const userRoutes = (app, database, logger) => {
             } else {
               next(new InternalError(`Internal error renaming user with ID '${oldUserName}' in the database`));
             }          
-          })
+          });
       })
       .catch(err => {
         logger.log(err.stack || err.toString());
@@ -100,6 +100,6 @@ const userRoutes = (app, database, logger) => {
       });
   });
 
-};
+}
 
 export default userRoutes;

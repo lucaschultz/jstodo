@@ -1,4 +1,4 @@
-function noOperation() {};
+function noOperation() {}
 
 function cleanup(logger, callback) {
   
@@ -10,16 +10,16 @@ function cleanup(logger, callback) {
   process.on('cleanup', callback);
 
   // Cleanup vor einem regulärem exit
-  process.on('exit', function () {
+  process.on('exit', () => {
     process.emit('cleanup');
-    logger.log('Received exit, shutting down')
+    logger.log('Received exit, shutting down');
     process.exit();
   });
 
   // Kein cleanup bei SIGINT event ...
   process.on('SIGINT', function handler () {
     // ... stattdessen logge ...
-    logger.log('Received SIGINT, shutting down')
+    logger.log('Received SIGINT, shutting down');
     // ... entferne diesen handler ...
     process.removeListener('SIGINT', handler);
     // ... und beende diesen Prozess mit einem SIGINT event
@@ -27,10 +27,10 @@ function cleanup(logger, callback) {
   });
 
   // Bei uncaught execptions kein cleanup aber ein Stacktrace
-  process.on('uncaughtException', function(err) {
+  process.on('uncaughtException', (err) => {
     logger.log(`Uncaught Exception: ${err.stack || err.toString()}`);
     process.exit(99);
   });
-};
+}
 
 export default cleanup;
