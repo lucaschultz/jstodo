@@ -1,30 +1,43 @@
-# JS Todo
+# Single Page Todo App
+
+![](screenshot.png)
+
+Diese SPA wurde als Projekt für das Modul *Web- und XML-Technologien* an der [Rheinische Friedrich-Wilhelms-Universität Bonn](https://www.uni-bonn.de/) entwickelt. Einige *Quirks* der Implementierung sind auf die sehr strengen und **klar definierten Anforderungen** der Aufgabenstellung zurückzuführen.
 
 ### Architektur des Clients
 
-Wir haben versucht den Client so modular wie möglich zu gestalten und möglichst eine *single source of truth* zu implementieren. Da das [Framework](https://vuex.vuejs.org) um einen *data store* in Vue.js zu implementieren leider nicht erlaubt war, ist das *users array* in der *root vue instance* der *data store*. Das hat bei der ersten Abgabe leider dazu geführt das der Client recht kompliziert geworden ist. Schließlich musste alles zunächst als *props* an die jeweils darstellenden *vue instance* gegeben, dort als eigene *data* enpackt (*props* sollen/dürfen nicht *mutated*), verarbeitet und wieder hoch zur *root instance emitted* werden. In der Endabgabe muss nichts mehr im Client verarbeitet werden, da der Server diese Aufgabe übernimmt.
+Ich habe versucht, den Client so modular wie möglich zu gestalten und eine *single source of truth* zu implementieren. Da [Vuex](https://vuex.vuejs.org) leider nicht erlaubt war, ist das *users array* in der *root instance* der *data store*. Das hat bei der ersten Abgabe leider dazu geführt, dass der Client recht kompliziert geworden ist.
 
-Die Grundsätzliche Idee war folgende, es gibt drei grundsätzliche Arten von Daten: Users, Listen und Items. Jede werden von einer Komponente dargestellt und mit einer anderen Komponente bearbeitet. Durch drücken des *edit buttons* wird das jeweilige Objekt in die Editor Komponente geladen. 
+Grundsätzlich gibt es drei Arten von Daten: Users, Listen und Items. Jede Art wird von einer Komponente dargestellt und mit einer anderen Komponente bearbeitet. Durch drücken des *edit buttons* auf einer *instance* wird das jeweilige Objekt in die Editor Komponente geladen. 
 
 Durch das Abbrechen des Bearbeitens im Editor mit dem *cancel button* wird das Objekt im Editor gelöscht. So können bestehende Objekte bearbeitet und gelöscht werden. Ist kein Objekt im Editor, wird dieser als *add button* angezeigt. Dieser initialisiert ein neues Objekt das mit dem *confirm button* gespeichert werden kann.
 
 ### Architektur des Servers
 
-Auch der Server sollte möglichst modular aufgebaut sein. Daher haben wir ein zentrales Database Modul geschrieben. Dieses schreibt/liest die JSON Daten aus der *Datenbank* mit *async functions*. Die einzelnen Routen interagieren mit der API des Datenbank Moduls und antworten auf die *HTTP requests* des Clients. 
+Auch der Server sollte möglichst modular aufgebaut sein. Daher habe ich ein Datenbank Modul geschrieben. Dieses abstrahiert die Lese-/Schreibzugriffe auf die JSON-*Datenbank* mit `async` Funktionen. 
 
-Die Fehlermeldungen, Objektvalidierung (der Anfragen), Responseobjekte und die Serverlogs haben wir auch möglichst Modular implementiert. Wir haben darauf geachtet möglichst wenig Code zu wiederholen und jede Funktionalität möglichst einfach in einem eigenen Modul zu implementieren. 
+Die einzelnen Routen interagieren mit der API des Datenbank Moduls und antworten auf die *HTTP requests* des Clients. 
+
+Die Fehlermeldungen, Objektvalidierung (der Anfragen), Response-Objekte und die Server Logs haben wir auch möglichst modular implementiert. Ich habe darauf geachtet, möglichst wenig Code zu wiederholen und jede Funktionalität in einem eigenen Modul zu implementieren.
 
 ### Zusammenführen von Client und Server
 
-Im Endeffekt war die Architektur des Clients von Anfang an für das Server Backend ausgelegt. Wir haben nur ein Modul hinzugefügt das die Server API spiegelt, eine *error component* hinzugefügt und den Code der die Daten lokal *mutated* ersetzt durch Code der das API Modul benutzt um Änderungen zum Server zu übertragen. Außerdem mussten noch ein paar *emits* eingefügt werden um Fehlermeldungen/Erfolgmeldungen der Serverkommunikation zur *root instance* weiter zu leiten. Diese Meldungen werden genutzt um ztu entscheiden ob die aktualisierten Daten vom Server geladen werden oder die Fehlermeldung angezeigt wird.
-
 ![](./jstodo-architecture.png)
+
+Im Endeffekt war die Architektur des Clients von Anfang an für das Server Backend ausgelegt. 
+
+Ich habe habe für die zweite Abgabe nur ein Modul welches die API-Calls zum Backend abstrahiert und eine eine `error` Component (für Fehlermeldungen vom Server) hinzugefügt. 
+
+Außerdem musste natürlich der Code der die Daten lokal verändert ersetzt werden und ein paar `emits` eingefügt werden um Fehlermeldungen/Erfolgmeldungen der Serverkommunikation zur *root instance* weiter zu leiten. Diese Meldungen werden genutzt um zu entscheiden ob die aktualisierten Daten vom Server geladen werden oder die Fehlermeldung angezeigt wird.
 
 ### Bekannte Bugs
 
-Leider gibt es noch einige Bugs:
+Leider gibt es einige bekannte Bugs:
 
-- Da der Server keine IDs sondern Namen nutzt, führt ein Leerer String als Name den ein User im Client vergibt für Kommunikationsprobleme mit dem Server.
-- Wenn man ein Objekt bearbeitet, kann man es relativ einfach ausversehen löschen. Abbrechen des Bearbeitens im jeweiligen löscht das Objekt. Könnte man durch Beschriftung der Buttons offensichtlicher machen
-- Wenn kein Workload Factor vergeben wird aktualisiert sich die %-Anzeige nicht.
-- Einige ESLINT Warnungen ließen sich leide rnicht umgehen weil z.B. die Signatur von einer *error middleware* durch Express.js vorgegeben ist aber nicht alle übergebenen Argumente in der Funktion benötigt werden
+- Da der Server keine IDs sondern (gemäß der Aufgabenstellung) die  Titel der Objekte nutzt, können bestimmte Strings (z.B. leerer Listenname)zu Kommunikationsproblemen mit dem Server führen.
+- Wenn man ein Objekt bearbeitet, kann es relativ einfach ausversehen gelöscht werden. Abbrechen des Bearbeitens im jeweiligen Editor löscht das Objekt. Könnte/Sollte man vermutlich durch andere Beschriftung der Buttons offensichtlicher machen
+- Wenn kein *workload factor* vergeben wird, aktualisiert sich die %-Anzeige nicht. Wir waren uns uneinig wie man das am besten implementiert. Die zwei Ideen waren:
+    + Ein nicht vergebener *workload factor* zählt als ein Faktor von 1
+    + Ein nicht vergebener *workload factor* wird einfach nicht gezählt. Allerdings kann so eine Liste 100% angezeigt werden ohne dass alle Aufgaben erledigt sind.  
+
+
