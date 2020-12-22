@@ -12,5 +12,4 @@ npm install
 npm start
 ```
 
-### Server Struktur
 
